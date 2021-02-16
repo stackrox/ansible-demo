@@ -10,7 +10,7 @@ jobs:
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
       - name: Build & push new latest
-        if: ${{ github.ref == 'ref/head/main' }}
+        if: ${{ steps.extract_branch.outputs.branch == 'main' }}
         uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
         with:
           gcloud_service_key: ${{ secrets.GCR_SERVICE_ACCOUNT}}
@@ -19,7 +19,7 @@ jobs:
           image_name: ansible-demo
           image_tag: ${{ github.run_number }},latest
       - name: Build & push non-main branch
-        if: ${{ github.ref != 'ref/head/main' }}
+        if: ${{ steps.extract_branch.outputs.branch != 'main' }}
         uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
         with:
           gcloud_service_key: ${{ secrets.GCR_SERVICE_ACCOUNT}}
