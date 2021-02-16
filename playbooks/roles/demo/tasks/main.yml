@@ -1,0 +1,8 @@
+---
+- include_tasks: image_pull_secret.yml
+- include_tasks: violation_policies.yml
+# - include_tasks: slack.yml
+- include_tasks: deploy_demos.yml
+- name: Baseline processes
+  include_tasks: baseline_processes.yml
+- include_tasks: setup_auth0.yml

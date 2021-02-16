@@ -1,0 +1,13 @@
+---
+- name: Apply/update policies
+  uri:
+    url: "{{ central_url }}/v1/policies/import"
+    body: "{{ lookup('file', item ) }}"
+    method: POST
+    user: admin
+    password: "{{ admin_password }}"
+    body_format: json
+    force_basic_auth: true
+    validate_certs: no        
+  with_fileglob:
+    - "files/policies/*.json" 

@@ -1,0 +1,6 @@
+- hosts: localhost
+
+  tasks:
+    - name: pull images
+      shell: "skopeo copy --authfile=/home/rando/.docker/config.json docker://{{ item.old }} docker://{{ item.new }}"
+      loop: "{{ images_to_copy }}" 

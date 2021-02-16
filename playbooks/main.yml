@@ -1,0 +1,36 @@
+---
+- hosts: localhost
+
+  pre_tasks:
+  # create kubeconfig
+    - copy:
+        dest: "files/kubeconfig"
+        content: "{{ lookup('env', 'KUBECONFIG_BASE64') | b64decode }}"
+  # create docker config.json
+    - copy:
+        dest: "files/config.json"
+        content: "{{ lookup('env', 'DOCKERCONFIG_BASE64') | b64decode }}" 
+  # read config from environment variables
+    - set_fact:
+        central_port: "{{ lookup('env', 'CENTRAL_PORT') }}"
+        central_addr: "{{ lookup('env', 'CENTRAL_ADDR') }}"
+        admin_password: "{{ lookup('env', 'ADMIN_PASSWORD') }}"
+        orchestrator: "{{ lookup('env', 'ORCHESTRATOR') }}"
+        kubeconfig: "files/kubeconfig"
+        auth_client_id: "{{ lookup('env', 'AUTH_CLIENT_ID') }}"
+        auth_domain: "{{ lookup('env', 'AUTH_DOMAIN') }}"
+
+    - name: Installing on k8s
+      set_fact:
+        orchestrator_tool: kubectl
+      when:
+        orchestrator == "k8s"
+    - name: Installing on OpenShift
+      set_fact:
+        orchestrator_tool: oc
+      when:
+        orchestrator == "openshift"
+    
+  tasks:
+    - import_role:
+        name: demo
