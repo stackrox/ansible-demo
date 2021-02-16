@@ -6,9 +6,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
+        if: {{ github.ref == 'ref/head/main' }}
         with:
           gcloud_service_key: ${{ secrets.GCR_SERVICE_ACCOUNT}}
           registry: gcr.io
           project_id: rox-se
           image_name: ansible-demo
           image_tag: ${{ github.run_number }},latest
+      - uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
+        if: {{ github.ref != 'ref/head/main' }}
+        with:
+          gcloud_service_key: ${{ secrets.GCR_SERVICE_ACCOUNT}}
+          registry: gcr.io
+          project_id: rox-se
+          image_name: ansible-demo
+          image_tag: ${GITHUB_REF##*/}-${{ github.run_number }}
