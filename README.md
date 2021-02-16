@@ -24,5 +24,5 @@ A few notes:
 * Auth0 integration is there but it's not going to work until we figure out the right approach for allowed callback URLs.
 * The process baseline is now locked for deployments that have rogue processes runing in them.
 * Not yet implemented:
-- Slack notification
-- There might be other things 
+  - Slack notification
+  - There might be other things 
