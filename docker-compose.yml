@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+  ansible-demo-build:
+    image: demo-build:1
+    container_name: demo-build
+    env_file:
+      - ./config.env
+
