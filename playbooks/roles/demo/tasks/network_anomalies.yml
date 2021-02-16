@@ -1,4 +1,3 @@
----
 - name: Get deployments
   uri:
     url: "{{ central_url }}/v1/deployments?query=Deployment:\"{{ item }}\""
@@ -10,8 +9,7 @@
   register: deployments
   loop:
     - visa-processor
-    - backend-atlas
-    - asset-cache
+    - patient-db
 
 - name: Set deployment id
   set_fact: 
@@ -28,25 +26,23 @@
   register: deployment_details
   loop: "{{ deployment_ids }}"
 
-- name: Update baselines
+- name: Get jump-host id
   uri:
-    url: "{{ central_url }}/v1/processbaselines"
-    body: "{{ lookup('template', 'templates/baseline/baseline.json.j2' ) }}"
-    method: PUT
+    url: "{{ central_url }}/v1/deployments?query=Deployment:\"jump-host\""
+    method: GET
     user: admin
     password: "{{ admin_password }}"
-    body_format: json
     force_basic_auth: true
-    validate_certs: no
-  loop: "{{ deployment_details.results }}" 
-  loop_control:
-    label: "{{ item.json.name }}"
+    validate_certs: no  
+  register: jumphost
 
-- name: Lock baselines
+- debug: var=jumphost
+
+- name: Update baselines
   uri:
-    url: "{{ central_url }}/v1/processbaselines/lock"
-    body: "{{ lookup('template', 'templates/baseline/lock.json.j2' ) }}"
-    method: PUT
+    url: "{{ central_url }}/v1/networkbaseline/{{ jumphost.json.deployments[0].id }}/peers"
+    body: "{{ lookup('template', 'templates/network_anomalies/peers.json.j2' ) }}"
+    method: PATCH
     user: admin
     password: "{{ admin_password }}"
     body_format: json
