@@ -18,3 +18,11 @@ AUTH_DOMAIN=abc123.auth0.com
 ```
 
 3. Invoke the `docker-compose.yml` with `docker-compose up ansible-demo-build`
+
+A few notes:
+
+* Auth0 integration is there but it's not going to work until we figure out the right approach for allowed callback URLs.
+* The process baseline is now locked for deployments that have rogue processes runing in them.
+* Not yet implemented:
+- Slack notification
+- There might be other things 
