@@ -5,6 +5,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       - name: Build & push new latest
         if: ${{ github.ref == 'ref/head/main' }}
         uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
@@ -22,4 +26,4 @@ jobs:
           registry: gcr.io
           project_id: rox-se
           image_name: ansible-demo
-          image_tag: ${GITHUB_REF##*/}-${{ github.run_number }}
+          image_tag: ${{ steps.extract_branch.outputs.branch }}-${{ github.run_number }}
