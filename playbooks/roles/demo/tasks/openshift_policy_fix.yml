@@ -1,0 +1,37 @@
+---
+- name: Get policies
+  uri:
+    url: "{{ central_url }}/v1/policies"
+    method: GET
+    user: admin
+    password: "{{ admin_password }}"
+    force_basic_auth: true
+    validate_certs: no  
+  register: policies
+
+- name: Get policy details
+  uri:
+    url: "{{ central_url }}/v1/policies/{{ policies.json.policies | json_query(jmesquery) | first }}"
+    method: GET
+    user: admin
+    password: "{{ admin_password }}"
+    force_basic_auth: true
+    validate_certs: no  
+  vars:
+    jmesquery: "[? name==`{{ item.name }}`].id"
+  register: policy_details
+  loop: "{{ openshift_policy_fixes }}"
+
+- name: Update policies
+  uri:
+    url: "{{ central_url }}/v1/policies/{{ item.json.id }}"
+    body: "{{ lookup('template', 'templates/openshift_policy_fix/policy.json.j2') }}"
+    method: PUT
+    user: admin
+    password: "{{ admin_password }}"
+    body_format: json
+    force_basic_auth: true
+    validate_certs: no
+  loop: "{{ policy_details.results }}"
+  loop_control: 
+    label: "{{ item.item.name }}"
