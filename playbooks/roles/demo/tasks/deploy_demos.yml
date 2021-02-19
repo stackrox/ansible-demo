@@ -1,6 +1,7 @@
 - name: Get demos
   find:
-    paths: roles/demo/files/demos
+    paths: 
+      - roles/demo/files/demos
     recurse: yes
     patterns: '*.yaml'
   register: demo_yamls
