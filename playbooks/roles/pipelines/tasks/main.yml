@@ -1,4 +1,25 @@
 ---
+- name: Create tasks & pipeline
+  community.kubernetes.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/install/pipeline_subscription.yml' ) | from_yaml_all }}"
+  # shell: "{{ orchestrator_tool }} apply --request-timeout=90s -R -f {{ item }}"
+  environment:
+    KUBECONFIG: "{{ kubeconfig }}"
+
+
+- name: Wait for demos to start.
+  shell: "{{ orchestrator_tool }} wait --namespace={{ item.namespace }} --for=condition=Ready pods --selector \"{{ item.selector }}\" --timeout=30s"
+  environment:
+    KUBECONFIG: "{{ kubeconfig }}"
+  retries: 3
+  delay: 10
+  register: result
+  until: result.rc == 0
+  loop:
+    - { namespace: 'openshift-operators', selector: 'name=openshift-pipelines-operator'}
+
+
 - name: Create API token
   uri:
     url: "{{ central_url }}/v1/apitokens/generate"
