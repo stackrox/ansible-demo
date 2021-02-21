@@ -1,4 +1,24 @@
 ---
+- name: Get existing auth providers
+  uri:
+    url: "{{ central_url }}/v1/authProviders"
+    method: GET
+    user: admin
+    password: "{{ admin_password }}"
+    body_format: json
+    force_basic_auth: true
+    validate_certs: no
+  register: authProviders
+
+- debug: var=authProviders
+
+- set_fact:
+    authProviderAlreadyDefined: "{{ authProviders.json.authProviders | json_query(jmesquery) }}"
+  vars:
+    jmesquery: "[? name==`Default Auth0`]"
+
+- debug: var=authProviderAlreadyDefined
+
 - name: Apply/update policies
   uri:
     url: "{{ central_url }}/v1/authProviders"
@@ -10,6 +30,7 @@
     force_basic_auth: true
     validate_certs: no
   register: authProvider
+  when: authProviderAlreadyDefined[0].name is not defined 
 
 - debug: var=authProvider
 
@@ -22,4 +43,5 @@
     password: "{{ admin_password }}"
     body_format: json
     force_basic_auth: true
-    validate_certs: no  
+    validate_certs: no
+  when: authProviderAlreadyDefined[0].name is not defined
