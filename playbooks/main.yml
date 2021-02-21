@@ -34,3 +34,7 @@
   tasks:
     - import_role:
         name: demo
+    - import_role:
+        name: pipelines
+      when:
+        orchestrator == "openshift"
