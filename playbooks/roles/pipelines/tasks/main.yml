@@ -1,5 +1,5 @@
 ---
-- name: Create tasks & pipeline
+- name: Subscribe to pipeline operator
   community.kubernetes.k8s:
     state: present
     definition: "{{ lookup('file', 'files/install/pipeline_subscription.yml' ) | from_yaml_all }}"
@@ -8,17 +8,25 @@
     KUBECONFIG: "{{ kubeconfig }}"
 
 
-- name: Wait for demos to start.
+- name: Wait for operator to start.
   shell: "{{ orchestrator_tool }} wait --namespace={{ item.namespace }} --for=condition=Ready pods --selector \"{{ item.selector }}\" --timeout=30s"
   environment:
     KUBECONFIG: "{{ kubeconfig }}"
-  retries: 3
-  delay: 10
+  retries: 5
+  delay: 30
   register: result
   until: result.rc == 0
   loop:
     - { namespace: 'openshift-operators', selector: 'name=openshift-pipelines-operator'}
 
+- name: Wait for ClusterTasks to be available
+  shell: "{{ orchestrator_tool }} describe ClusterTask tkn"
+  environment:
+    KUBECONFIG: "{{ kubeconfig }}"
+  retries: 5
+  delay: 30
+  register: result
+  until: result.rc == 0
 
 - name: Create API token
   uri:
@@ -70,6 +78,18 @@
   environment:
     KUBECONFIG: "{{ kubeconfig }}"
   loop: "{{ pipeline_yamls.files }}"
+
+- name: Wait for Rox ClusterTasks to be available
+  shell: "{{ orchestrator_tool }} describe ClusterTask {{ item }}"
+  environment:
+    KUBECONFIG: "{{ kubeconfig }}"
+  retries: 5
+  delay: 30
+  register: result
+  until: result.rc == 0
+  loop:
+    - "rox-image-scan"
+    - "rox-image-check"
 
 - name: Run pipeline against sample images
   community.kubernetes.k8s:
