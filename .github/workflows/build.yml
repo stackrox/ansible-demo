@@ -14,7 +14,7 @@ jobs:
         uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
         with:
           gcloud_service_key: ${{ secrets.GCR_SERVICE_ACCOUNT}}
-          registry: gcr.io
+          registry: us.gcr.io
           project_id: rox-se
           image_name: ansible-demo
           image_tag: ${{ github.run_number }},latest
@@ -23,7 +23,7 @@ jobs:
         uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
         with:
           gcloud_service_key: ${{ secrets.GCR_SERVICE_ACCOUNT}}
-          registry: gcr.io
+          registry: us.gcr.io
           project_id: rox-se
           image_name: ansible-demo
           image_tag: ${{ steps.extract_branch.outputs.branch }}-${{ github.run_number }}

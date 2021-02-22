@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   ansible-demo-build:
-    image: gcr.io/rox-se/ansible-demo:latest
+    image: us.gcr.io/rox-se/ansible-demo:latest
     container_name: demo-build
     env_file:
       - ./config.env
