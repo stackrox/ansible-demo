@@ -17,7 +17,7 @@ AUTH_CLIENT_ID=Ym9vLXlhaCBib3kgZGlkIHlvdSByZWFsbHkgZGVjb2RlIGFsbCB0aGVzZT8K
 AUTH_DOMAIN=abc123.auth0.com
 ```
 
-3. Invoke the `docker-compose.yml` with `docker-compose up ansible-demo-build`
+3. Invoke the `docker-compose.yml` with `docker-compose run ansible-demo-build`
 
 A few notes:
 
