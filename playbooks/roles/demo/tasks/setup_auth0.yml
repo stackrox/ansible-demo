@@ -10,14 +10,10 @@
     validate_certs: no
   register: authProviders
 
-- debug: var=authProviders
-
 - set_fact:
     authProviderAlreadyDefined: "{{ authProviders.json.authProviders | json_query(jmesquery) }}"
   vars:
     jmesquery: "[? name==`Default Auth0`]"
-
-- debug: var=authProviderAlreadyDefined
 
 - name: Apply/update policies
   uri:
@@ -31,8 +27,6 @@
     validate_certs: no
   register: authProvider
   when: authProviderAlreadyDefined[0].name is not defined 
-
-- debug: var=authProvider
 
 - name: Create Auth0 group
   uri:

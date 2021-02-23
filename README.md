@@ -13,9 +13,16 @@ CENTRAL_PORT=443
 CENTRAL_ADDR=central-stackrox.apps.neil-demo.openshift.roxse.io
 ADMIN_PASSWORD=ThisIsAnUnusuallyStrongPassphraseThatYou'llEndUpTypoing
 ORCHESTRATOR=openshift
+```
+
+(optional:  If supplied, Auth0 will be configured
+
+```
 AUTH_CLIENT_ID=Ym9vLXlhaCBib3kgZGlkIHlvdSByZWFsbHkgZGVjb2RlIGFsbCB0aGVzZT8K
 AUTH_DOMAIN=abc123.auth0.com
 ```
+
+Add the appropriate values to `config.env`.)
 
 3. Invoke the `docker-compose.yml` with `docker-compose run ansible-demo-build`
 
