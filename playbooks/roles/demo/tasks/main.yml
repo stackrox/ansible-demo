@@ -12,3 +12,5 @@
   when: 
     orchestrator == "openshift"
 - include_tasks: setup_auth0.yml
+  when: auth_client_id != ""
+    
