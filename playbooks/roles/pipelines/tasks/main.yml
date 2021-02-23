@@ -95,7 +95,6 @@
   community.kubernetes.k8s:
     state: present
     definition: "{{ lookup('template', 'templates/run/4-rox-pipelinerun.yml.j2' ) | from_yaml_all }}"
-  # shell: "{{ orchestrator_tool }} apply --request-timeout=90s -R -f {{ item }}"
   environment:
     KUBECONFIG: "{{ kubeconfig }}"
   loop:
@@ -103,3 +102,12 @@
       image: "gcr.io/rox-se/sample-image:getting-started-old"
     - name: "sample-image-new"
       image: "gcr.io/rox-se/sample-image:getting-started"
+
+- name: Run pipeline against deployment yamls
+  community.kubernetes.k8s:
+    state: present
+    definition: "{{ lookup('template', 'templates/run/4-rox-deploy-pipelinerun.yml.j2' ) | from_yaml_all }}"
+  environment:
+    KUBECONFIG: "{{ kubeconfig }}"
+  loop: "{{ deployment_yamls }}"
+  # defined in roles/pipelines/vars/main.yml
