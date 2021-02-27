@@ -1,1 +1,42 @@
 central_url: "https://{{ central_addr }}:{{ central_port }}"
+
+deployment_yamls:
+  - name: bad-deployment
+    yaml: |
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: prod-app
+        labels:
+          app: prod-app
+      spec:
+        containers:
+        - name: app-container
+          image: gcr.io/rox-se/sample-image:getting-started-old
+          ports:
+          - containerPort: 8080
+          securityContext:
+            privileged: true
+  - name: better-deployment
+    yaml: |
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: prod-app
+        labels:
+          app: prod-app
+      spec:
+        containers:
+        - name: app-container
+          image: gcr.io/rox-se/sample-image:getting-started
+          ports:
+          - containerPort: 8080
+          securityContext:
+            privileged: false
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"

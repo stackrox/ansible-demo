@@ -1,0 +1,18 @@
+imagePullSecrets:
+    username: "{{ imagepulluser }}"
+    password: "{{ imagepullpassword }}"
+
+clusterName: "production"
+
+centralEndpoint: "{{ central_addr }}:{{ central_port }}"
+
+admissionControl:
+    listenOnCreates: true
+    listenOnUpdates: true
+    listenOnEvents: true
+    
+    dynamic:
+        enforceOnCreates: true
+        enforceOnUpdates: true
+
+{{ cluster_init_response.json.helmValuesBundle | b64decode }}

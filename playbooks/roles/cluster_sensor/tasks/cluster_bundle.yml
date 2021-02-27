@@ -1,0 +1,26 @@
+---
+- name: Add helm repo
+  community.kubernetes.helm_repository:
+    name: stackrox
+    url: "https://charts.stackrox.io"
+
+- name: Get cluster init bundle
+  uri:
+    url: "{{ central_url }}/v1/cluster-init/init-bundles"
+    body: "{ \"name\": \"prod-{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}\"}"
+    method: POST
+    user: admin
+    password: "{{ admin_password }}"
+    body_format: json
+    force_basic_auth: true
+    validate_certs: no
+  register: cluster_init_response
+
+- name: Deploy cluster package
+  community.kubernetes.helm:
+    name: stackrox-secured-cluster-services
+    chart_ref: stackrox/secured-cluster-services
+    release_namespace: stackrox
+    values:  "{{ lookup('template', 'templates/cluster.yml.j2')| from_yaml }}"
+    kubeconfig: "{{ kubeconfig }}"
+    create_namespace: true
