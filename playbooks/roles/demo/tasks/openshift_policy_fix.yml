@@ -20,6 +20,7 @@
   vars:
     jmesquery: "[? name==`{{ item.name }}`].id"
   register: policy_details
+  when: policies.json.policies | json_query(jmesquery) | first is defined
   loop: "{{ openshift_policy_fixes }}"
 
 - name: Update policies
@@ -32,7 +33,9 @@
     body_format: json
     force_basic_auth: true
     validate_certs: no
+    # temporarily accept 400s due to ROX-6699
+    status_code: 200, 400
   loop: "{{ policy_details.results }}"
-  when: item.json.id exists
+  when: item.json is defined
   loop_control: 
     label: "{{ item.item.name }}"
