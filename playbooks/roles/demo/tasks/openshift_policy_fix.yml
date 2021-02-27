@@ -33,5 +33,6 @@
     force_basic_auth: true
     validate_certs: no
   loop: "{{ policy_details.results }}"
+  when: item.json.id exists
   loop_control: 
     label: "{{ item.item.name }}"
