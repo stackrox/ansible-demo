@@ -1,0 +1,52 @@
+---
+- name: Generate htpasswd
+  htpasswd:
+    path: files/passwdfile
+    name: admin
+    password: "{{ admin_password }}"
+    crypt_scheme: "bcrypt"
+
+- name: Add helm repo
+  community.kubernetes.helm_repository:
+    name: stackrox
+    url: "https://charts.stackrox.io"
+
+- set_fact:
+    htpasswd: "{{ lookup('file', 'files/passwdfile') }}"
+
+- name: Deploy Central
+  community.kubernetes.helm:
+    name: stackrox-central-services
+    chart_ref: stackrox/central-services
+    release_namespace: stackrox
+    values: "{{ lookup('template', 'templates/central.yml.j2') | from_yaml }}"
+    kubeconfig: "{{ kubeconfig }}"
+    create_namespace: true
+
+- name: k8s - get loadBalancer
+  command: "kubectl get svc -n stackrox central-loadbalancer -o jsonpath='{.status.loadBalancer.ingress[0].ip}'"
+  environment:
+    KUBECONFIG: "{{ kubeconfig }}"
+  register: get_lb
+  when:
+    orchestrator == "k8s"
+
+- set_fact:
+    central_addr: "{{ get_lb.stdout }}"
+  when:
+    orchestrator == "k8s"
+
+- name: OCP - get route
+  command: "oc get route -n stackrox central -o jsonpath='{.status.ingress[0].host}'"
+  environment:
+    KUBECONFIG: "{{ kubeconfig }}"
+  register: get_route
+  when:
+    orchestrator == "openshift"
+
+- set_fact:
+    central_addr: "{{ get_route.stdout }}"
+  retries: 5
+  delay: 20
+  when:
+    orchestrator == "openshift"
