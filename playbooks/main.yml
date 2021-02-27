@@ -13,12 +13,16 @@
   # read config from environment variables
     - set_fact:
         central_port: "{{ lookup('env', 'CENTRAL_PORT') }}"
+        original_central_addr: "{{ lookup('env', 'CENTRAL_ADDR') }}"
         central_addr: "{{ lookup('env', 'CENTRAL_ADDR') }}"
         admin_password: "{{ lookup('env', 'ADMIN_PASSWORD') }}"
         orchestrator: "{{ lookup('env', 'ORCHESTRATOR') }}"
         kubeconfig: "files/kubeconfig"
         auth_client_id: "{{ lookup('env', 'AUTH_CLIENT_ID') }}"
         auth_domain: "{{ lookup('env', 'AUTH_DOMAIN') }}"
+        stackrox_license: "{{ lookup('env', 'STACKROX_LICENSE') }}"
+        imagepulluser: "{{ lookup('env', 'IMAGE_PULL_USER') }}"
+        imagepullpassword: "{{ lookup('env', 'IMAGE_PULL_PASSWORD') }}"
 
     - name: Installing on k8s
       set_fact:
@@ -32,6 +36,14 @@
         orchestrator == "openshift"
     
   tasks:
+    - import_role:
+        name: central
+      when:
+        original_central_addr == ""
+    - import_role:
+        name: cluster_sensor
+      when:
+        original_central_addr == ""
     - import_role:
         name: demo
     - import_role:

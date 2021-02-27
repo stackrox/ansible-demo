@@ -1,5 +1,6 @@
 # ansible-demo
-Create sales demos on k8s/OpenShift with Ansible
+
+Deploy StackRox and create sales demos on k8s/OpenShift with Ansible
 
 To use:
 
@@ -10,9 +11,11 @@ To use:
 KUBECONFIG_BASE64=TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gVml2YW11cyBmYWNpbGlzaXMgZWxlaWZlbmQgZWxlbWVudHVtLiBBbGlxdWFtIHVsbGFtY29ycGVyIHJpc3VzIGxvcmVtLCBuZWMgYXVjdG9yLgo=
 DOCKERCONFIG_BASE64=V2l0aCBTdGFja1JveCwgUmVkIEhhdCBzdHJlbmd0aGVucyBjdXN0b21lcnPigJkgYWJpbGl0eSB0byBidWlsZCwgZGVwbG95IGFuZCBydW4gYXBwbGljYXRpb25zIG1vcmUgc2VjdXJlbHkgYWNyb3NzIHRoZSBvcGVuIGh5YnJpZCBjbG91ZAo=
 CENTRAL_PORT=443
-CENTRAL_ADDR=central-stackrox.apps.neil-demo.openshift.roxse.io
 ADMIN_PASSWORD=ThisIsAnUnusuallyStrongPassphraseThatYou'llEndUpTypoing
 ORCHESTRATOR=openshift
+STACKROX_LICENSE=<license string>
+IMAGE_PULL_USER=<email with permissions to pull from StackRox registry>
+IMAGE_PULL_PASSWORD=<password for image pull account>
 ```
 
 (optional:  If supplied, Auth0 will be configured
@@ -23,6 +26,9 @@ AUTH_DOMAIN=abc123.auth0.com
 ```
 
 Add the appropriate values to `config.env`.)
+
+
+(optional:  If `CENTRAL_ADDR` is supplied, the playbook will skip installing Central and the cluster bundle.)
 
 3. Invoke the `docker-compose.yml` with `docker-compose run ansible-demo-build`
 

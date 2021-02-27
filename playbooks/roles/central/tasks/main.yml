@@ -1,20 +1,3 @@
-
-
-- name: Download roxctl
-  get_url:
-    url: https://install.stackrox.io/3.0.55.0/bin/Linux/roxctl
-    dest: files/bin/roxctl
-    username: "{{ rox_account_user }}"
-    password: "{{ rox_account_pass }}"
-    mode: "u+rwx"
-
-- name: Generate central bundle
-  shell: |
-    files/bin/roxctl central generate {{ orchestrator }} pvc \
-      --scanner-image="{{ scanner_image }}" \
-      --scanner-db-image="{{ scanner_db_image }}" \
-      --main-image="{{ stackrox_image }}" \
-      --lb-type="lb" \
-      --output-dir=files/central \
-      --license="{{ stackrox_license }}" \
-      {{ cert_arg }}
+---
+- name: Install Central
+  include_tasks: central.yml
