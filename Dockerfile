@@ -2,7 +2,7 @@ FROM frolvlad/alpine-glibc:alpine-3.11_glibc-2.31
 
 ARG OC_VERSION=4.6
  
-ENV ANSIBLE_VERSION 2.10.4
+ENV ANSIBLE_VERSION 3.0.0
  
 ENV BUILD_PACKAGES \
   bash \
@@ -18,12 +18,14 @@ ENV BUILD_PACKAGES \
   py-paramiko \
   py-pip \
   py-yaml \
-  ca-certificates
+  ca-certificates 
  
 # If installing ansible@testing
 #RUN \
 #	echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> #/etc/apk/repositories
- 
+
+# pinned python kubernetes & openshift libraries for now due to https://github.com/ansible-collections/community.kubernetes/issues/314
+
 RUN set -x && \
     \
     echo "==> Adding build-dependencies..."  && \
@@ -47,7 +49,7 @@ RUN set -x && \
     pip3 install python-keyczar docker-py && \
     \
     echo "==> Installing Ansible & dependencies..."  && \
-    pip3 install jmespath openshift ansible==${ANSIBLE_VERSION} && \
+    pip3 install jmespath kubernetes==11.0.0 openshift==0.11.2 passlib ansible==${ANSIBLE_VERSION} && \
     \
     echo "==> Cleaning up..."  && \
     apk del build-dependencies && \
@@ -67,6 +69,14 @@ RUN mkdir /tools && \
 
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
      && chmod u+x kubectl && mv kubectl /bin/kubectl
+
+# install helm
+
+RUN curl https://get.helm.sh/helm-v3.5.2-linux-amd64.tar.gz -o helm.tar.gz \
+    && tar -xvf helm.tar.gz \
+    && rm helm.tar.gz \
+    && mv linux-amd64/helm /usr/local/bin/helm \
+    && chmod +x /usr/local/bin/helm
 
 ENV ANSIBLE_GATHERING smart
 ENV ANSIBLE_HOST_KEY_CHECKING false
