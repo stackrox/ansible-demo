@@ -12,7 +12,7 @@
         content: "{{ lookup('env', 'DOCKERCONFIG_BASE64') | b64decode }}" 
   # read config from environment variables
     - set_fact:
-        central_port: "{{ lookup('env', 'CENTRAL_PORT') }}"
+        central_port: "{{ lookup('env', 'CENTRAL_PORT') | default('443', True) }}"
         original_central_addr: "{{ lookup('env', 'CENTRAL_ADDR') }}"
         central_addr: "{{ lookup('env', 'CENTRAL_ADDR') }}"
         admin_password: "{{ lookup('env', 'ADMIN_PASSWORD') }}"
