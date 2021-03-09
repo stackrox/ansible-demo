@@ -6,10 +6,10 @@
     - copy:
         dest: "files/kubeconfig"
         content: "{{ lookup('env', 'KUBECONFIG_BASE64') | b64decode }}"
-  # create docker config.json
-    - copy:
-        dest: "files/config.json"
-        content: "{{ lookup('env', 'DOCKERCONFIG_BASE64') | b64decode }}" 
+  # # create docker config.json
+  #   - copy:
+  #       dest: "files/config.json"
+  #       content: "{{ lookup('env', 'DOCKERCONFIG_BASE64') | b64decode }}" 
   # read config from environment variables
     - set_fact:
         central_port: "{{ lookup('env', 'CENTRAL_PORT') | default('443', True) }}"

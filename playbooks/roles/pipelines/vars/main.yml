@@ -12,7 +12,7 @@ deployment_yamls:
       spec:
         containers:
         - name: app-container
-          image: gcr.io/rox-se/sample-image:getting-started-old
+          image: quay.io/rhacs-demo/sample-image:getting-started-old
           ports:
           - containerPort: 8080
           securityContext:
@@ -28,7 +28,7 @@ deployment_yamls:
       spec:
         containers:
         - name: app-container
-          image: gcr.io/rox-se/sample-image:getting-started
+          image: quay.io/rhacs-demo/sample-image:getting-started
           ports:
           - containerPort: 8080
           securityContext:
