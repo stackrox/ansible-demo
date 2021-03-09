@@ -6,13 +6,20 @@ clusterName: "production"
 
 centralEndpoint: "{{ central_addr }}:{{ central_port }}"
 
-admissionControl:
-    listenOnCreates: true
-    listenOnUpdates: true
-    listenOnEvents: true
-    
+collector:
+    collectionMethod: KERNEL_MODULE
+    disableTaintTolerations: false
+    slimMode: true
+
+helmManaged: true
+
+{{ cluster_init_response.json.helmValuesBundle | b64decode | replace("admissionControl:", "admissionControl:
     dynamic:
+        disableBypass: false
         enforceOnCreates: true
         enforceOnUpdates: true
-
-{{ cluster_init_response.json.helmValuesBundle | b64decode }}
+        scanInline: false
+        timeout: 3
+    listenOnCreates: true
+    listenOnEvents: true
+    listenOnUpdates: true") }}
