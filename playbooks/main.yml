@@ -23,6 +23,7 @@
         stackrox_license: "{{ lookup('env', 'STACKROX_LICENSE') }}"
         imagepulluser: "{{ lookup('env', 'IMAGE_PULL_USER') }}"
         imagepullpassword: "{{ lookup('env', 'IMAGE_PULL_PASSWORD') }}"
+        imageregistry: "{{ lookup('env', 'IMAGE_REGISTRY') | default('', True) }}"
 
     - name: Installing on k8s
       set_fact:
