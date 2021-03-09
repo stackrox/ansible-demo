@@ -37,6 +37,20 @@
     - { namespace: 'backend', selector: 'app=backend-atlas'}
     - { namespace: 'frontend', selector: 'app=asset-cache'}
 
+- name: Restart problematic pods
+  # These pods sometimes come up in a failed state.  Restarting them seems to resolve the issue.
+  shell: "{{ orchestrator_tool }} delete po --namespace={{ item.namespace }} --selector \"{{ item.selector }}\""
+  environment:
+    KUBECONFIG: "{{ kubeconfig }}"
+  retries: 3
+  delay: 10
+  register: result
+  until: result.rc == 0
+  loop:
+    - { namespace: 'payments', selector: 'app=mastercard-processor'}
+    - { namespace: 'backend', selector: 'app=backend-atlas'}
+
+
 - name: k8s_exec violation
   community.kubernetes.k8s_exec:
     namespace: payments
