@@ -24,18 +24,9 @@
     KUBECONFIG: "{{ kubeconfig }}"
   loop: "{{ demo_yamls.files }}"
 
-- name: Wait for demos to start.
-  shell: "{{ orchestrator_tool }} wait --namespace={{ item.namespace }} --for=condition=Ready pods --selector \"{{ item.selector }}\" --timeout=30s"
-  environment:
-    KUBECONFIG: "{{ kubeconfig }}"
-  retries: 3
-  delay: 10
-  register: result
-  until: result.rc == 0
-  loop:
-    - { namespace: 'payments', selector: 'app=visa-processor'}
-    - { namespace: 'backend', selector: 'app=backend-atlas'}
-    - { namespace: 'frontend', selector: 'app=asset-cache'}
+- name: Wait before restarting problematic pods
+  pause:
+    minutes: 1
 
 - name: Restart problematic pods
   # These pods sometimes come up in a failed state.  Restarting them seems to resolve the issue.
@@ -50,6 +41,19 @@
     - { namespace: 'payments', selector: 'app=mastercard-processor'}
     - { namespace: 'backend', selector: 'app=backend-atlas'}
 
+
+- name: Wait for demos to start.
+  shell: "{{ orchestrator_tool }} wait --namespace={{ item.namespace }} --for=condition=Ready pods --selector \"{{ item.selector }}\" --timeout=30s"
+  environment:
+    KUBECONFIG: "{{ kubeconfig }}"
+  retries: 3
+  delay: 10
+  register: result
+  until: result.rc == 0
+  loop:
+    - { namespace: 'payments', selector: 'app=visa-processor'}
+    - { namespace: 'backend', selector: 'app=backend-atlas'}
+    - { namespace: 'frontend', selector: 'app=asset-cache'}
 
 - name: k8s_exec violation
   community.kubernetes.k8s_exec:

@@ -14,8 +14,9 @@ CENTRAL_PORT=443
 ADMIN_PASSWORD=ThisIsAnUnusuallyStrongPassphraseThatYou'llEndUpTypoing
 ORCHESTRATOR=openshift
 STACKROX_LICENSE=<license string>
-IMAGE_PULL_USER=<email with permissions to pull from StackRox registry>
+IMAGE_PULL_USER=<quay.io username>
 IMAGE_PULL_PASSWORD=<password for image pull account>
+IMAGE_REGISTRY=quay.io/rhacs
 ```
 
 (optional:  If supplied, Auth0 will be configured
@@ -29,6 +30,7 @@ Add the appropriate values to `config.env`.)
 
 
 (optional:  If `CENTRAL_ADDR` is supplied, the playbook will skip installing Central and the cluster bundle.)
+(optional:  If you want to pull images from `stackrox.io` directly, omit IMAGE_REGISTRY and provide credentials for `stackrox.io`.)
 
 3. Invoke the `docker-compose.yml` with `docker-compose run ansible-demo-build`
 

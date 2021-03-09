@@ -19,6 +19,15 @@ central:
       enabled: true
 {% endif %}
 
+{% if imageregistry != '' %}
+image:
+  registry: "{{ imageregistry }}"
+{% endif %}
+
+
+
+
+
 
 imagePullSecrets:
     username: "{{ imagepulluser }}"

@@ -27,7 +27,7 @@ metadata:
   labels:
     app: visa-processor
 secrets:
-- name: gcrcred
+- name: rhacs-demo-pull-pull-secret
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -70,14 +70,14 @@ spec:
        app: visa-processor
     spec:
       imagePullSecrets:
-      - name: gcrcred
+      - name: rhacs-demo-pull-pull-secret
       serviceAccountName: visa-processor
       volumes:
       - name: ssh-keys
         secret:
           secretName: ssh-keys
       containers:
-      - image: gcr.io/rox-se/struts-violations/visa-processor:latest-v2
+      - image: quay.io/rhacs-demo/visa-processor:latest-v2
         imagePullPolicy: Always
         name: visa-processor
         ports:
@@ -95,7 +95,7 @@ spec:
         env:
         - name: I_HAVE_A_SECRET
           value: "true"
-      - image: gcr.io/rox-se/srox/visa-processor:sidecar-latest-v2
+      - image: quay.io/rhacs-demo/visa-processor:sidecar-latest-v2
         imagePullPolicy: Always
         name: visa-processor-sidecar
         command: ["/bin/entrypoint"]
@@ -144,13 +144,13 @@ spec:
        app: gateway
     spec:
       imagePullSecrets:
-      - name: gcrcred
+      - name: rhacs-demo-pull-pull-secret
       volumes:
       - name: ssh-keys
         secret:
           secretName: ssh-keys
       containers:
-      - image: gcr.io/rox-se/srox/netflow:latest
+      - image: quay.io/rhacs-demo/netflow:latest
         command: ["/bin/entrypoint"]
         args: ["-listen", "7777", "-connect", "visa-processor-service.payments.svc.cluster.local:8080,mastercard-processor-service.payments.svc.cluster.local:8080"]
         imagePullPolicy: Always
@@ -230,10 +230,10 @@ spec:
        app: mastercard-processor
     spec:
       imagePullSecrets:
-      - name: gcrcred
+      - name: rhacs-demo-pull-pull-secret
       serviceAccountName: mastercard-processor
       containers:
-      - image: gcr.io/rox-se/struts-violations/mastercard-processor:latest
+      - image: quay.io/rhacs-demo/mastercard-processor:latest
         imagePullPolicy: Always
         name: mastercard-processor
         ports:

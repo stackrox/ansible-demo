@@ -39,9 +39,9 @@ spec:
        app: api-server
     spec:
       imagePullSecrets:
-      - name: gcrcred
+      - name: rhacs-demo-pull-pull-secret
       containers:
-      - image: gcr.io/rox-se/srox/netflow:latest
+      - image: quay.io/rhacs-demo/netflow:latest
         command: ["/bin/entrypoint"]
         args: ["-listen", "9001", "-connect", "backend-atlas-service.backend.svc.cluster.local:8080,postgres-service.backend.svc.cluster.local:5432,gateway-service.payments.svc.cluster.local:7777"]
         imagePullPolicy: Always
@@ -132,14 +132,14 @@ spec:
     spec:
       serviceAccountName: backend-atlas
       imagePullSecrets:
-      - name: gcrcred
+      - name: rhacs-demo-pull-pull-secret
       containers:
-      - image: gcr.io/rox-se/struts-violations/backend-atlas:latest
+      - image: quay.io/rhacs-demo/backend-atlas:latest
         imagePullPolicy: Always
         name: backend-atlas
         ports:
         - containerPort: 8080
-      - image: gcr.io/rox-se/srox/backend-atlas:sidecar-latest
+      - image: quay.io/rhacs-demo/backend-atlas:sidecar-latest
         command: ["/bin/entrypoint"]
         name: log-collector
 
@@ -255,13 +255,13 @@ spec:
        app: postgres
     spec:
       imagePullSecrets:
-        - name: gcrcred
+        - name: rhacs-demo-pull-pull-secret
       volumes:
       - name: ssh-keys
         secret:
           secretName: ssh-keys
       containers:
-      - image: gcr.io/rox-se/srox/netflow:latest
+      - image: quay.io/rhacs-demo/netflow:latest
         command: ["/bin/entrypoint"]
         args: ["-listen", "5432"]
         imagePullPolicy: Always
@@ -315,9 +315,9 @@ spec:
        app: varnish
     spec:
       imagePullSecrets:
-      - name: gcrcred
+      - name: rhacs-demo-pull-pull-secret
       containers:
-      - image: gcr.io/rox-se/srox/netflow:latest
+      - image: quay.io/rhacs-demo/netflow:latest
         command: ["/bin/entrypoint"]
         args: ["-listen", "8080", "-connect", "api-server-service.backend.svc.cluster.local:9001"]
         imagePullPolicy: Always

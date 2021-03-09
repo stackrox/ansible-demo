@@ -41,9 +41,9 @@ spec:
        app: asset-cache
     spec:
       imagePullSecrets:
-      - name: gcrcred
+      - name: rhacs-demo-pull-pull-secret
       containers:
-      - image: gcr.io/rox-se/struts-violations/asset-cache:latest
+      - image: quay.io/rhacs-demo/asset-cache:latest
         imagePullPolicy: Always
         name: asset-cache
         ports:
@@ -52,7 +52,7 @@ spec:
         securityContext:
           capabilities:
             drop: ["NET_ADMIN"]
-      - image: gcr.io/rox-se/srox/asset-cache:sidecar-latest
+      - image: quay.io/rhacs-demo/asset-cache:sidecar-latest
         imagePullPolicy: Always
         name: asset-cache-sidecar
         command: ["/bin/entrypoint"]
@@ -103,13 +103,13 @@ spec:
        app: tls-proxy
     spec:
       imagePullSecrets:
-      - name: gcrcred
+      - name: rhacs-demo-pull-pull-secret
       volumes:
       - name: ssh-keys
         secret:
           secretName: ssh-keys
       containers:
-      - image: gcr.io/rox-se/srox/netflow:latest
+      - image: quay.io/rhacs-demo/netflow:latest
         command: ["/bin/entrypoint"]
         args: ["-listen", "80,443", "-connect", "asset-cache-service.frontend.svc.cluster.local:8080,wordpress-service.frontend.svc.cluster.local:80"]
         imagePullPolicy: Always
@@ -215,8 +215,8 @@ spec:
        app: monitor
     spec:
       imagePullSecrets:
-      - name: gcrcred
+      - name: rhacs-demo-pull-pull-secret
       containers:
-      - image: gcr.io/rox-se/srox/monitor:latest
+      - image: quay.io/rhacs-demo/monitor:latest
         imagePullPolicy: Always
         name: monitor

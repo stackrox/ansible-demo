@@ -13,6 +13,14 @@ collector:
 
 helmManaged: true
 
+{% if imageregistry != '' %}
+image:
+    main:
+        registry: "{{ imageregistry }}"
+    collector:
+          registry: "{{ imageregistry }}"
+{% endif %}
+
 {{ cluster_init_response.json.helmValuesBundle | b64decode | replace("admissionControl:", "admissionControl:
     dynamic:
         disableBypass: false

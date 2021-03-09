@@ -99,9 +99,9 @@
     KUBECONFIG: "{{ kubeconfig }}"
   loop:
     - name: "sample-image-old"
-      image: "gcr.io/rox-se/sample-image:getting-started-old"
+      image: "quay.io/rhacs-demo/sample-image:getting-started-old"
     - name: "sample-image-new"
-      image: "gcr.io/rox-se/sample-image:getting-started"
+      image: "quay.io/rhacs-demo/sample-image:getting-started"
 
 - name: Run pipeline against deployment yamls
   community.kubernetes.k8s:

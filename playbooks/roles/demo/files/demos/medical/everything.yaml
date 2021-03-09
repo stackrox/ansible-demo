@@ -28,9 +28,9 @@ spec:
        app: reporting
     spec:
       imagePullSecrets:
-      - name: gcrcred
+      - name: rhacs-demo-pull-pull-secret
       containers:
-      - image: gcr.io/rox-se/srox/reporting:latest
+      - image: quay.io/rhacs-demo/reporting:latest
         command: ["/bin/entrypoint"]
         args: ["-listen", "8080", "-connect", "patient-db-service.medical.svc.cluster.local:8080"]
         imagePullPolicy: Always
@@ -82,9 +82,9 @@ spec:
        app: patient-db
     spec:
       imagePullSecrets:
-      - name: gcrcred
+      - name: rhacs-demo-pull-pull-secret
       containers:
-      - image: gcr.io/rox-se/srox/netflow:latest
+      - image: quay.io/rhacs-demo/netflow:latest
         command: ["/bin/entrypoint"]
         args: ["-listen", "8080", "-connect", "reporting-service.medical.svc.cluster.local:8080"]
         imagePullPolicy: Always
@@ -179,9 +179,9 @@ spec:
        app: proxy
     spec:
       imagePullSecrets:
-      - name: gcrcred
+      - name: rhacs-demo-pull-pull-secret
       containers:
-      - image: gcr.io/rox-se/srox/proxy:latest
+      - image: quay.io/rhacs-demo/proxy:latest
         securityContext:
           privileged: true
         command: ["/bin/entrypoint"]
