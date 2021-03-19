@@ -25,7 +25,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           image: ansible-demo
-          tags: ${{ github.run_number }},latest
+          tags: ${{ github.run_number }} latest
           dockerfiles: |
             ./Dockerfile
 
