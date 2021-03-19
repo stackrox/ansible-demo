@@ -18,6 +18,28 @@ jobs:
           project_id: rox-se
           image_name: ansible-demo
           image_tag: ${{ github.run_number }},latest
+          
+      - name: Build Image
+        if: ${{ steps.extract_branch.outputs.branch == 'main' }}
+        id: build-image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: ansible-demo
+          tags: ${{ github.run_number }},latest
+          dockerfiles: |
+            ./Dockerfile
+
+      - name: Push To Quay
+        if: ${{ steps.extract_branch.outputs.branch == 'main' }}
+        id: push-to-quay
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build-image.outputs.image }}
+          tags: ${{ steps.build-image.outputs.tags }}
+          registry: quay.io/rhacs-demo
+          username: ${{ secrets.QUAY_USER }}
+          password: ${{ secrets.QUAY_PASS }}
+        
       - name: Build & push non-main branch
         if: ${{ steps.extract_branch.outputs.branch != 'main' }}
         uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
