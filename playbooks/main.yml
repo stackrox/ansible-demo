@@ -35,19 +35,28 @@
         orchestrator_tool: oc
       when:
         orchestrator == "openshift"
-    
+
   tasks:
+    - name: Facts1
+      setup:
+    - name: Facts2
+      ansible.builtin.debug:
+        var: ansible_facts[kubeconfig]
     - import_role:
         name: central
       when:
         original_central_addr == ""
+      tags: [skip]
     - import_role:
         name: cluster_sensor
       when:
         original_central_addr == ""
+      tags: [skip]
     - import_role:
         name: demo
+      tags: [skip]
     - import_role:
         name: pipelines
       when:
         orchestrator == "openshift"
+      tags: [skip]
