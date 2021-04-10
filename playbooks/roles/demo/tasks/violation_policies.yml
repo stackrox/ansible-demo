@@ -1,4 +1,12 @@
 ---
+- name: Shane Debug1
+  debug:
+    msg:
+    - "url => {{ central_url }}/v1/policies/import"
+    - "admin_password = {{ admin_password }}"
+  with_fileglob:
+    - "files/policies/*.json"
+
 - name: Apply/update policies
   uri:
     url: "{{ central_url }}/v1/policies/import"
@@ -8,6 +16,6 @@
     password: "{{ admin_password }}"
     body_format: json
     force_basic_auth: true
-    validate_certs: no        
+    validate_certs: no
   with_fileglob:
-    - "files/policies/*.json" 
+    - "files/policies/*.json"
