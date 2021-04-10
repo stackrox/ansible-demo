@@ -13,7 +13,6 @@ DOCKERCONFIG_BASE64=V2l0aCBTdGFja1JveCwgUmVkIEhhdCBzdHJlbmd0aGVucyBjdXN0b21lcnPi
 CENTRAL_PORT=443
 ADMIN_PASSWORD=ThisIsAnUnusuallyStrongPassphraseThatYou'llEndUpTypoing
 ORCHESTRATOR=openshift
-STACKROX_LICENSE=<license string>
 IMAGE_PULL_USER=<quay.io username>
 IMAGE_PULL_PASSWORD=<password for image pull account>
 IMAGE_REGISTRY=quay.io/rhacs
@@ -40,4 +39,4 @@ A few notes:
 * The process baseline is now locked for deployments that have rogue processes runing in them.
 * Not yet implemented:
   - Slack notification
-  - There might be other things 
+  - There might be other things

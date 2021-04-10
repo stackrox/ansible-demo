@@ -14,7 +14,6 @@
         kubeconfig: "files/kubeconfig"
         auth_client_id: "{{ lookup('env', 'AUTH_CLIENT_ID') }}"
         auth_domain: "{{ lookup('env', 'AUTH_DOMAIN') }}"
-        stackrox_license: "{{ lookup('env', 'STACKROX_LICENSE') }}"
         imagepulluser: "{{ lookup('env', 'IMAGE_PULL_USER') }}"
         imagepullpassword: "{{ lookup('env', 'IMAGE_PULL_PASSWORD') }}"
         imageregistry: "{{ lookup('env', 'IMAGE_REGISTRY') | default('', True) }}"
