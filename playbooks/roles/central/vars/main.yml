@@ -4,6 +4,4 @@ stackrox_image: stackrox.io/main:3.0.55.0
 
 cert_arg: "--default-tls-cert files/certs/cert.pem --default-tls-key files/certs/cert.pem"
 
-stackrox_license: CnAKJGJhMGY5NmNlLWQ0YTItNGQyZC05OWExLTQ5ZjcyNzc4NjViOBIoZTg2ZTViMGZmNjVkMjE1NTI4MWQ3YmRhODczYzgyYWVjZGY2OGVlMxoMCLzG8/cFEPmyqrkCIgowMTIzNDU2Nzg5KgROZWlsEgAaGAoGCICqqPUFEgYIv4+Q+QUgATABQAFQAQ.MGQCMBwforq+/0nz0dWJxtVJa8Nb5znGTVx5Y9REmvRYcYurY7lbgvzdB0QN0jRsKLIElQIwbBXrGlKzKx/vhKylhnx80V6NzJ74VS4g8d0ULklxl2hAFB6L002xOCRHSYabjJze
-
 orchestrator: k8s

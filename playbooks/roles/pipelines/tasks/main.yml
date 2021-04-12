@@ -4,8 +4,7 @@
     state: present
     definition: "{{ lookup('file', 'files/install/pipeline_subscription.yml' ) | from_yaml_all }}"
   # shell: "{{ orchestrator_tool }} apply --request-timeout=90s -R -f {{ item }}"
-  environment:
-    KUBECONFIG: "{{ kubeconfig }}"
+    kubeconfig: "{{ kubeconfig }}"
 
 
 - name: Wait for operator to start.
@@ -45,8 +44,8 @@
     rox_api_token:  "{{ ci_token_json.json.token }}"
 
 - name: Create namespace
-  shell: '{{ orchestrator_tool }} 
-    create ns {{ item }} --dry-run  -o yaml | \
+  shell: '{{ orchestrator_tool }}
+    create ns {{ item }} --dry-run=client  -o yaml | \
     {{ orchestrator_tool }} \
     apply -f -'
   environment:
@@ -59,12 +58,11 @@
     state: present
     definition: "{{ lookup('template', 'templates/config/1-rox-secrets.yml.j2' ) | from_yaml_all }}"
   # shell: "{{ orchestrator_tool }} apply --request-timeout=90s -R -f {{ item }}"
-  environment:
-    KUBECONFIG: "{{ kubeconfig }}"
+    kubeconfig: "{{ kubeconfig }}"
 
 - name: Get pipeline yamls
   find:
-    paths: 
+    paths:
       - roles/pipelines/files/config
     recurse: yes
     patterns: '*.yml'
@@ -75,8 +73,7 @@
     state: present
     definition: "{{ lookup('file', item.path ) | from_yaml_all }}"
   # shell: "{{ orchestrator_tool }} apply --request-timeout=90s -R -f {{ item }}"
-  environment:
-    KUBECONFIG: "{{ kubeconfig }}"
+    kubeconfig: "{{ kubeconfig }}"
   loop: "{{ pipeline_yamls.files }}"
 
 - name: Wait for Rox ClusterTasks to be available
@@ -95,8 +92,7 @@
   community.kubernetes.k8s:
     state: present
     definition: "{{ lookup('template', 'templates/run/4-rox-pipelinerun.yml.j2' ) | from_yaml_all }}"
-  environment:
-    KUBECONFIG: "{{ kubeconfig }}"
+    kubeconfig: "{{ kubeconfig }}"
   loop:
     - name: "sample-image-old"
       image: "quay.io/rhacs-demo/sample-image:getting-started-old"
@@ -107,7 +103,6 @@
   community.kubernetes.k8s:
     state: present
     definition: "{{ lookup('template', 'templates/run/4-rox-deploy-pipelinerun.yml.j2' ) | from_yaml_all }}"
-  environment:
-    KUBECONFIG: "{{ kubeconfig }}"
+    kubeconfig: "{{ kubeconfig }}"
   loop: "{{ deployment_yamls }}"
   # defined in roles/pipelines/vars/main.yml

@@ -1,6 +1,6 @@
 - name: Get demos
   find:
-    paths: 
+    paths:
       - roles/demo/files/demos
     recurse: yes
     patterns: '*.yaml'
@@ -20,8 +20,7 @@
     state: present
     definition: "{{ lookup('file', item.path ) | from_yaml_all }}"
   # shell: "{{ orchestrator_tool }} apply --request-timeout=90s -R -f {{ item }}"
-  environment:
-    KUBECONFIG: "{{ kubeconfig }}"
+    kubeconfig: "{{ kubeconfig }}"
   loop: "{{ demo_yamls.files }}"
 
 - name: Wait before restarting problematic pods
