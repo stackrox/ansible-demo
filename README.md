@@ -15,7 +15,6 @@ ADMIN_PASSWORD=ThisIsAnUnusuallyStrongPassphraseThatYou'llEndUpTypoing
 ORCHESTRATOR=openshift
 IMAGE_PULL_USER=<quay.io username>
 IMAGE_PULL_PASSWORD=<password for image pull account>
-IMAGE_REGISTRY=quay.io/rhacs
 ```
 
 (optional:  If supplied, Auth0 will be configured
