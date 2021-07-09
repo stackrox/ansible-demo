@@ -52,11 +52,11 @@
         orchestrator == "openshift"
     
   tasks:
-    - import_role:
-        name: studentvm_ocp4
-        # install Helm
-      when:
-        platformplus == True
+    # - import_role:
+    #     name: studentvm_ocp4
+    #     # install Helm
+    #   when:
+    #     platformplus == True
     - import_role:
         name: ocp4_workload_authentication
         # add OpenShift users
