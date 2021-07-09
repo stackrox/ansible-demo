@@ -38,11 +38,11 @@
     creates: /usr/local/bin/tkn
 
 # command: does not work here - somehow the parameters don't get passed properly
-- name: Setup tkn bash completion
-  become: true
-  shell: "/usr/local/bin/tkn completion bash >/etc/bash_completion.d/tkn"
-  args:
-    creates: /etc/bash_completion.d/tkn
+# - name: Setup tkn bash completion
+#   become: true
+#   shell: "/usr/local/bin/tkn completion bash >/etc/bash_completion.d/tkn"
+#   args:
+#     creates: /etc/bash_completion.d/tkn
 
 - name: Wait until Pipelines Pods are ready
   k8s_info:
