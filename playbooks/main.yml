@@ -1,6 +1,9 @@
 ---
 - hosts: localhost
 
+  environment:
+    KUBECONFIG: "files/kubeconfig"
+
   pre_tasks:
   # create kubeconfig
     - copy:
