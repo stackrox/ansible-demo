@@ -6,7 +6,7 @@ silent: False
 # needs to match what is defined in the stackrox_central role (or overridden globally)
 ocp4_workload_stackrox_central_admin_password: stackrox
 
-ocp4_workload_stackrox_demo_apps_pull_secret: change_this
+ocp4_workload_stackrox_demo_apps_pull_secret: ewogICJhdXRocyI6IHsKICAgICJxdWF5LmlvIjogewogICAgICAiYXV0aCI6ICJjbWhoWTNNdFpHVnRieXR3ZFd4c09rYzFUMDVDUlRZeVRVSTNWa294UzBnMVJVNVRTelZNVEVJelNUUXlORGhMTTFsVVZsYzBOVTh4U0RsQ016ZFZORmc1TWpWWFdFOVZUbFpTVmpoVU5sTT0iLAogICAgICAiZW1haWwiOiAiIgogICAgfQogIH0KfQ==
 ocp4_workload_stackrox_demo_apps_namespaces:
   - backend
   - frontend
