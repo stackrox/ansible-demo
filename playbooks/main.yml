@@ -24,6 +24,20 @@
         imagepulluser: "{{ lookup('env', 'IMAGE_PULL_USER') }}"
         imagepullpassword: "{{ lookup('env', 'IMAGE_PULL_PASSWORD') }}"
         imageregistry: "{{ lookup('env', 'IMAGE_REGISTRY') | default('', True) }}"
+        platformplus: "{{ lookup('env', 'PLATFORM_PLUS') | default('', False) }}"
+        ACTION: "{{ lookup('env', 'ACTION') | default('', 'CREATE') }}"
+        ocp4_workload_pipelines_use_catalog_snapshot: true
+        ocp4_workload_rhacm_use_catalog_snapshot: true
+        ocp4_workload_rhacm_catalog_source_image: "quay.io/gpte-devops-automation/olm_snapshot_acm_redhat_catalog"
+        ocp4_workload_rhacm_catalog_source_tag: "v4.5_2020_09_25"
+        ocp4_workload_rhacm_acm_release: "release-2.0"
+        ocp4_workload_rhacm_acm_csv: "advanced-cluster-management.v2.0.3"
+        ocp4_workload_authentication_idm_type: htpasswd
+        ocp4_workload_authentication_htpasswd_user_base: user
+        ocp4_workload_authentication_htpasswd_user_password: openshift
+        ocp4_workload_authentication_htpasswd_user_count: 10
+        ocp4_workload_authentication_admin_user: admin
+        ocp4_workload_authentication_remove_kubeadmin: true
 
     - name: Installing on k8s
       set_fact:
@@ -38,16 +52,36 @@
     
   tasks:
     - import_role:
-        name: central
+        name: studentvm_ocp4
+        # install Helm
+      when:
+        platformplus == True
+    - import_role:
+        name: ocp4_workload_authentication
+        # add OpenShift users
+      when:
+        platformplus == True
+    - import_role:
+        name: ocp4_workload_rhacm
+        # install ACM
+      when:
+        platformplus == True
+    - import_role:
+        name: ocp4_workload_pipelines
+        # install Pipelines
+      when:
+        platformplus == True
+    - import_role:
+        name: ocp4_workload_stackrox_central
       when:
         original_central_addr == ""
     - import_role:
-        name: cluster_sensor
+        name: ocp4_workload_stackrox_sensor
       when:
         original_central_addr == ""
     - import_role:
-        name: demo
+        name: ocp4_workload_stackrox_demo_apps
     - import_role:
-        name: pipelines
+        name: ocp4_workload_stackrox_demo_pipeline
       when:
         orchestrator == "openshift"
