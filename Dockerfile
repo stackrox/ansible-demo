@@ -60,6 +60,19 @@ RUN set -x && \
     echo "[local]" >> /etc/ansible/hosts && \
     echo "localhost" >> /etc/ansible/hosts
 
+# install gcloud
+
+# Downloading gcloud package
+RUN curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > /tmp/google-cloud-sdk.tar.gz
+
+# Installing the package
+RUN mkdir -p /usr/local/gcloud \
+  && tar -C /usr/local/gcloud -xvf /tmp/google-cloud-sdk.tar.gz \
+  && /usr/local/gcloud/google-cloud-sdk/install.sh
+
+# Adding the package path to local
+ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
+
 # install kubectl & oc
 
 RUN mkdir /tools && \
@@ -89,6 +102,8 @@ ENV ANSIBLE_LIBRARY /ansible/library
 
 ADD playbooks/roles/ /ansible/playbooks/roles/
 ADD playbooks/*.yml /ansible/playbooks/
+ADD library/ /ansible/library/
+ADD playbooks/action_plugins/ /ansible/playbooks/action_plugins/
 
 RUN mkdir /ansible/playbooks/files
 
