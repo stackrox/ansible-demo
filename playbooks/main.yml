@@ -25,7 +25,7 @@
         imagepullpassword: "{{ lookup('env', 'IMAGE_PULL_PASSWORD') }}"
         imageregistry: "{{ lookup('env', 'IMAGE_REGISTRY') | default('', True) }}"
         platformplus: "{{ lookup('env', 'PLATFORM_PLUS') | default('', False) }}"
-        ACTION: "{{ lookup('env', 'ACTION') | default('', 'CREATE') }}"
+        ACTION: "{{ lookup('env', 'ACTION') | default('', 'create') }}"
         ocp4_workload_pipelines_use_catalog_snapshot: true
         ocp4_workload_rhacm_use_catalog_snapshot: true
         ocp4_workload_rhacm_catalog_source_image: "quay.io/gpte-devops-automation/olm_snapshot_acm_redhat_catalog"
