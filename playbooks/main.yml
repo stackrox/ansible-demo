@@ -57,11 +57,11 @@
     #     # install Helm
     #   when:
     #     platformplus == True
-    - import_role:
-        name: ocp4_workload_authentication
-        # add OpenShift users
-      when:
-        platformplus == True
+    # - import_role:
+    #     name: ocp4_workload_authentication
+    #     # add OpenShift users
+    #   when:
+    #     platformplus == True
     - import_role:
         name: ocp4_workload_rhacm
         # install ACM
