@@ -20,7 +20,7 @@ data:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: frontend-SA
+  name: frontend-sa
   namespace: frontend
   labels:
     app: frontend
@@ -56,7 +56,7 @@ roleRef:
   name: frontend-role
 subjects:
   - kind: ServiceAccount
-    name: frontend-SA
+    name: frontend-sa
     namespace: frontend
 ---
 # Deployment named "asset-cache"
@@ -79,7 +79,7 @@ spec:
       labels:
         app: asset-cache
     spec:
-      serviceAccountName: frontend-SA
+      serviceAccountName: frontend-sa
       imagePullSecrets:
         - name: gcrcred
       containers:
@@ -209,7 +209,7 @@ spec:
       labels:
         app: wordpress
     spec:
-      serviceAccountName: frontend-SA
+      serviceAccountName: frontend-sa
       containers:
         - image: wordpress:latest
           imagePullPolicy: Always
