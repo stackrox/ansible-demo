@@ -27,7 +27,7 @@
         ocp4_workload_stackrox_central_imagepulluser: "{{ lookup('env', 'IMAGE_PULL_USER') }}"
         ocp4_workload_stackrox_central_imagepullpassword: "{{ lookup('env', 'IMAGE_PULL_PASSWORD') }}"
         imageregistry: "{{ lookup('env', 'IMAGE_REGISTRY') | default('', True) }}"
-        platformplus: "{{ lookup('env', 'PLATFORM_PLUS') | default('', False) }}"
+        platformplus: "{{ lookup('env', 'PLATFORM_PLUS') | default('', True) }}"
         ACTION: "{{ lookup('env', 'ACTION') | default('', 'create') }}"
         ocp4_workload_pipelines_use_catalog_snapshot: true
         ocp4_workload_rhacm_use_catalog_snapshot: true
