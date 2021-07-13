@@ -43,6 +43,7 @@
         ocp4_workload_authentication_remove_kubeadmin: true
         ansible_user: lab-user
         cloud_provider: none
+        output_dir: "/tmp"
 
     - name: Installing on k8s
       set_fact:
@@ -90,3 +91,9 @@
         name: ocp4_workload_stackrox_demo_pipeline
       when:
         orchestrator == "openshift"
+
+  post_tasks:
+    - name: find /tmp files 
+      find:
+        paths: /tmp
+      
