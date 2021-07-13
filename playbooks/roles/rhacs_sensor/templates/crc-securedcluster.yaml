@@ -1,0 +1,30 @@
+apiVersion: platform.stackrox.io/v1alpha1
+kind: SecuredCluster
+metadata:
+  namespace: stackrox
+  name: stackrox-secured-cluster-services
+spec:
+  clusterName: development
+  admissionControl:
+    listenOnCreates: true
+    listenOnEvents: true
+    listenOnUpdates: true
+    resources:
+      requests:
+        cpu: 200m
+  sensor:
+    resources:
+      requests:
+        cpu: 200m
+  perNode:
+    collector:
+      collection: KernelModule
+      imageFlavor: Regular
+      resources:
+        requests:
+          cpu: 200m
+    compliance:
+      resources:
+        requests:
+          cpu: 200m
+    taintToleration: TolerateTaints

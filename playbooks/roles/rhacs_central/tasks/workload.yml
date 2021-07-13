@@ -1,0 +1,106 @@
+# vim: set ft=ansible
+---
+- name: Create namespace
+  kubernetes.core.k8s:
+    kind: Namespace
+    name: "stackrox"
+    state: present
+
+- name: Install Operators
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'templates/' + item)}}"
+  loop:
+    - 1-rhacs_subscription.yml.j2
+
+- name: Wait until rhacs Pods are ready
+  k8s_info:
+    api_version: v1
+    kind: Deployment
+    namespace: openshift-operators
+    name: rhacs-operator-controller-manager
+  register: r_rhacs_controller_deployment
+  retries: 60
+  delay: 20
+  until:
+  - r_rhacs_controller_deployment.resources | length | int > 0
+  - r_rhacs_controller_deployment.resources[0].status.readyReplicas is defined
+  - r_rhacs_controller_deployment.resources[0].status.readyReplicas | int == r_rhacs_controller_deployment.resources[0].spec.replicas | int
+
+- name: Install Central on Red Hat CodeReady Containers
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'templates/' + item)}}"
+  loop:
+    - crc-central.yaml
+  when: crc|bool
+
+- name: Install Central on OpenShift Container Platform
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'templates/' + item)}}"
+  loop:
+    - central.yaml
+  when: not crc|bool
+
+- name: Wait until Central Pods are ready
+  k8s_info:
+    api_version: v1
+    kind: Deployment
+    namespace: stackrox
+    name: central
+  register: r_rhacs_central_deployment
+  retries: 60
+  delay: 20
+  until:
+  - r_rhacs_central_deployment | length | int > 0
+  - r_rhacs_central_deployment.resources[0].status.readyReplicas is defined
+  - r_rhacs_central_deployment.resources[0].status.readyReplicas | int == r_rhacs_central_deployment.resources[0].spec.replicas | int
+
+- name: Get central route
+  kubernetes.core.k8s_info:
+    kind: Route
+    api_version: route.openshift.io/v1
+    namespace: stackrox
+    name: central
+  register: r_stackrox_central_route
+  retries: 60
+  delay: 20
+
+- name: Store central route as a fact
+  set_fact:
+    f_stackrox_central_addr: "{{ r_stackrox_central_route.resources[0].spec.host }}"
+
+- name: Get Admin Password
+  kubernetes.core.k8s_info:
+    kind: Secret
+    api_version: v1
+    namespace: stackrox
+    name: central-htpasswd
+  register: r_stackrox_admin_password
+  retries: 60
+  delay: 20
+
+- name: Store central admin password as a fact
+  set_fact:
+    f_stackrox_admin_password: "{{ r_stackrox_admin_password.resources[0].data.password | b64decode }}"
+
+- name: Wait for Central availability
+  uri:
+    url: "https://{{ f_stackrox_central_addr }}/v1/ping"
+    method: GET
+    user: admin
+    password: "{{ f_stackrox_admin_password}}"
+    force_basic_auth: true
+    validate_certs: false
+  no_log: True
+  register: result
+  until: result.status == 200
+  retries: 60
+  delay: 20
+
+- name: CENTRAL ADMIN URL and PASSWORD 
+  debug:
+    msg: 
+      - "CENTRAL URL: https://{{ f_stackrox_central_addr }}"
+      - "ADMIN PASSWORD: {{ f_stackrox_admin_password}}"

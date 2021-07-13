@@ -1,0 +1,14 @@
+---
+# Do not modify this file
+
+- name: Running Pre Workload Tasks
+  include_tasks:
+    file: ./pre_workload.yml
+    apply:
+      become: "{{ become_override | bool }}"
+
+- name: Running Workload Tasks
+  include_tasks:
+    file: ./workload.yml
+    apply:
+      become: "{{ become_override | bool }}"

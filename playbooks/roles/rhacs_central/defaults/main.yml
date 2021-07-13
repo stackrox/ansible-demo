@@ -1,0 +1,6 @@
+---
+become_override: false
+ocp_username: kubeadmin
+silent: false
+crc: false
+ACTION: create
