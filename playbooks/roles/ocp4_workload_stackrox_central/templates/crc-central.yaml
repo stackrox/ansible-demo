@@ -1,0 +1,36 @@
+apiVersion: platform.stackrox.io/v1alpha1
+kind: Central
+metadata:
+  namespace: stackrox
+  name: central
+spec:
+  central:
+    exposure:
+      loadBalancer:
+        enabled: false
+        port: 443
+      nodePort:
+        enabled: false
+      route:
+        enabled: true
+    persistence:
+      persistentVolumeClaim:
+        claimName: stackrox-db
+    resources:
+      requests:
+        cpu: 200m
+  egress:
+    connectivityPolicy: Online
+  scanner:
+    analyzer:
+      resources:
+        requests:
+          cpu: 200m
+      scaling:
+        autoScaling: Disabled
+        replicas: 1
+    db:
+      resources:
+        requests:
+          cpu: 200m
+    scannerComponent: Enabled

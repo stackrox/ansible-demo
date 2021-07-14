@@ -1,8 +1,5 @@
 ---
 become_override: false
-ocp_username: opentlc-mgr
+ocp_username: kubeadmin
 silent: false
-
-# needs to match what is defined in the stackrox_central role (or overridden
-# globally)
-ocp4_workload_stackrox_central_admin_password: stackrox
+crc: false

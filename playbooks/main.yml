@@ -28,7 +28,7 @@
         ocp4_workload_stackrox_central_imagepullpassword: "{{ lookup('env', 'IMAGE_PULL_PASSWORD') }}"
         imageregistry: "{{ lookup('env', 'IMAGE_REGISTRY') | default('', True) }}"
         platformplus: "{{ lookup('env', 'PLATFORM_PLUS') | default('', True) }}"
-        ACTION: create
+        ACTION: "create"
         ocp4_workload_pipelines_use_catalog_snapshot: true
         ocp4_workload_rhacm_use_catalog_snapshot: true
         ocp4_workload_rhacm_catalog_source_image: "quay.io/gpte-devops-automation/olm_snapshot_acm_redhat_catalog"
@@ -67,6 +67,8 @@
     #     # add OpenShift users
     #   when:
     #     platformplus == True
+    - debug:
+        var: ACTION
     - import_role:
         name: ocp4_workload_rhacm
         # install ACM

@@ -1,44 +1,25 @@
 # vim: set ft=ansible
 ---
-
+# requires that you already used the stackrox_central role
 - name: Get cluster init bundle
   uri:
     url: "https://{{ f_stackrox_central_addr }}/v1/cluster-init/init-bundles"
     body: "{ \"name\": \"prod-{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}\"}"
     method: POST
     user: admin
-    password: "{{ f_stackrox_admin_password }}"
+    password: "{{ ocp4_workload_stackrox_central_admin_password }}"
     body_format: json
     force_basic_auth: true
     validate_certs: false
-  no_log: true
   register: r_stackrox_cluster_init_response
 
-- name: Store cluster init bundle as a fact
-  set_fact:
-    f_stackrox_bundle: "{{ r_stackrox_cluster_init_response.json.kubectlBundle | b64decode }}"
-
-- name: Create init-bundle secrets
-  kubernetes.core.k8s:
-    namespace: stackrox
-    state: present
-    definition: "{{ f_stackrox_bundle }}"
-
-- name: Install Sensor on Red Hat CodeReady Containers
-  kubernetes.core.k8s:
-    state: present
-    definition: "{{ lookup('template', 'templates/' + item)}}"
-  loop:
-    - crc-securedcluster.yaml
-  when: crc|bool
-
-- name: Install Sensor on OpenShift Container Platform
-  kubernetes.core.k8s:
-    state: present
-    definition: "{{ lookup('template', 'templates/' + item)}}"
-  loop:
-    - securedcluster.yaml
-  when: not crc|bool
+- name: Deploy cluster package
+  kubernetes.core.helm:
+    name: stackrox-secured-cluster-services
+    chart_ref: stackrox/secured-cluster-services
+    release_namespace: stackrox
+    values: "{{ lookup('template', 'templates/cluster.yml.j2')| from_yaml }}"
+    create_namespace: true
 
 - name: Wait for ready sensor
   kubernetes.core.k8s_info:
@@ -50,7 +31,7 @@
   until:
     - r_stackrox_sensor_deployment.resources[0].status.readyReplicas is defined
     - r_stackrox_sensor_deployment.resources[0].status.readyReplicas | int >= 1
-  delay: 60
+  delay: 20
   retries: 15
 
 - name: Determine number of collectors
@@ -71,12 +52,7 @@
   register: r_stackrox_collector_daemonset
   until:
     - r_stackrox_collector_daemonset.resources[0].status.numberReady is defined
+# yamllint disable-line rule:line-length
     - r_stackrox_collector_daemonset.resources[0].status.numberReady | int == r_stackrox_collector_daemonset.resources[0].status.desiredNumberScheduled | int
-  delay: 60
+  delay: 20
   retries: 15
-
-- name: CENTRAL ADMIN URL and PASSWORD 
-  debug:
-    msg: 
-      - "CENTRAL URL: https://{{ f_stackrox_central_addr }}"
-      - "ADMIN PASSWORD: {{ f_stackrox_admin_password}}"
