@@ -1,41 +1,77 @@
-# ansible-demo
+# Install Red Hat Advanced Cluster Security for Kubernetes on OpenShift/CRC - Red Hat CodeReady Containers
+Deploy Red Hat Advanced Cluster Security for Kubernetes Demo ( Apps and Pipelines ) on OpenShift 4.x or CRC in a easy and automated way.
 
-Deploy StackRox and create sales demos on k8s/OpenShift with Ansible
+## PREREQUISITES
 
-To use:
+- OpenShift Cluster or CRC - Red Hat CodeReady Containers 
 
-1. Base64 encode your kubeconfig (must have only one context -- this is an Ansible limitation) and your docker config.json with read access to gcr.io/rox-se.  (`base64 -w 0 kubeconfig`...)
-2. Copy `docker-compose.yml` and `sample.env` from the repo.  Rename `sample.env` to `config.env` and put the proper values for each of the variables in there.  For example:
+#### Minimum Requirements to run the demo workload on top of CRC: [Configuring the virtual machine](https://code-ready.github.io/crc/#configuring-the-virtual-machine_gsg)
+
+- Minimum 4 vCPU (additional are strongly recommended).
+- Minimum 16 GB RAM (additional memory is strongly recommended).
+
+### Ansible 2.9
+- [Ansible Installation Guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) 
+- python3-pyyaml
+- python3-openshift
+- python3-jmespath
+
+
+### Define crc variable to deploy RHACS on CRC
+
+| Variable | Bool |
+| -------- | -------- | 
+| crc    |  true or false     |
+
+### Steps
+
+#### Configuring the CRC Virtual Machine
+---
+```
+crc config set cpus 4
+crc config set memory 16384
+```
+
+#### Installing RHACS and Demo workloads - RHEL/Centos
+---
+
+Install EPEL on CentOS
+```
+yum install epel-release -y
+```
 
 ```
-KUBECONFIG_BASE64=TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gVml2YW11cyBmYWNpbGlzaXMgZWxlaWZlbmQgZWxlbWVudHVtLiBBbGlxdWFtIHVsbGFtY29ycGVyIHJpc3VzIGxvcmVtLCBuZWMgYXVjdG9yLgo=
-DOCKERCONFIG_BASE64=V2l0aCBTdGFja1JveCwgUmVkIEhhdCBzdHJlbmd0aGVucyBjdXN0b21lcnPigJkgYWJpbGl0eSB0byBidWlsZCwgZGVwbG95IGFuZCBydW4gYXBwbGljYXRpb25zIG1vcmUgc2VjdXJlbHkgYWNyb3NzIHRoZSBvcGVuIGh5YnJpZCBjbG91ZAo=
-CENTRAL_PORT=443
-ADMIN_PASSWORD=ThisIsAnUnusuallyStrongPassphraseThatYou'llEndUpTypoing
-ORCHESTRATOR=openshift
-IMAGE_PULL_USER=<quay.io username>
-IMAGE_PULL_PASSWORD=<password for image pull account>
+yum install python3-pyyaml python3-jmespath python3-openshift ansible -y
+ansible-galaxy collection install kubernetes.core
+git clone https://github.com/stackrox/ansible-demo
+cd ansible-demo/playbooks
 ```
 
-(optional:  If supplied, Auth0 will be configured
+You can use the **rhacs-install.yaml** as example, please change the credentials before running the playbook.
 
+rhacs-install.yaml file Example
+---
 ```
-AUTH_CLIENT_ID=Ym9vLXlhaCBib3kgZGlkIHlvdSByZWFsbHkgZGVjb2RlIGFsbCB0aGVzZT8K
-AUTH_DOMAIN=abc123.auth0.com
+- hosts: localhost
+  vars:
+    crc: true
+  roles:
+  - stackrox_central
+  - stackrox_sensor
+  - stackrox_demo_apps
+  - stackrox_demo_pipeline
 ```
 
-Add the appropriate values to `config.env`.)
+Login to crc/ocp using a Cluster-Admin user.
+---
+```
+oc login -u kubeadmin https://api.crc.testing:6443 
+```
 
+Running the playbook.
+---
+```
+ansible-playbook rhacs-install.yaml
+```
 
-(optional:  If `CENTRAL_ADDR` is supplied, the playbook will skip installing Central and the cluster bundle.)
-(optional:  If you want to pull images from `stackrox.io` directly, omit IMAGE_REGISTRY and provide credentials for `stackrox.io`.)
-
-3. Invoke the `docker-compose.yml` with `docker-compose run ansible-demo-build`
-
-A few notes:
-
-* Auth0 integration is there but it's not going to work until we figure out the right approach for allowed callback URLs.
-* The process baseline is now locked for deployments that have rogue processes runing in them.
-* Not yet implemented:
-  - Slack notification
-  - There might be other things
+It might take a bit of time, so grab a coffee and enjoy :)
