@@ -95,9 +95,9 @@
 #   retries: 60
 #   delay: 20
 
-- name: Store central admin password as a fact
-  set_fact:
-    f_stackrox_admin_password: "{{ r_stackrox_admin_password.resources[0].data.password | b64decode }}"
+# - name: Store central admin password as a fact
+#   set_fact:
+#     f_stackrox_admin_password: "{{ r_stackrox_admin_password.resources[0].data.password | b64decode }}"
 
 - name: Wait for Central availability
   uri:
