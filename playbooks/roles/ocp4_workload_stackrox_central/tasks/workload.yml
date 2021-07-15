@@ -8,13 +8,16 @@
 
 - name: Create password secret
   kubernetes.core.k8s:
-    apiVersion: v1
-    kind: Secret
-    metadata:
-      name: central-passwd
-    type: Opaque
-    data:
-      password: "{{ f_stackrox_admin_password }}"
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: central-passwd
+        namespace: openshift-operators
+      type: Opaque
+      data:
+        password: "{{ f_stackrox_admin_password}}"
+    state: present
     
 
 - name: Install Operators
