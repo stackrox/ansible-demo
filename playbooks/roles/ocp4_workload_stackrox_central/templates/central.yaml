@@ -7,6 +7,7 @@ spec:
   central:
     adminPasswordSecret:
       name: central-passwd
+      namespace: openshift-operators
     exposure:
       loadBalancer:
         enabled: false
