@@ -19,7 +19,6 @@
         original_central_addr: "{{ lookup('env', 'CENTRAL_ADDR') }}"
         central_addr: "{{ lookup('env', 'CENTRAL_ADDR') }}"
         f_stackrox_admin_password: "{{ lookup('env', 'ADMIN_PASSWORD') }}"
-        ocp4_workload_stackrox_central_admin_password: "{{ f_stackrox_admin_password }}"
         orchestrator: "{{ lookup('env', 'ORCHESTRATOR') }}"
         kubeconfig: "files/kubeconfig"
         auth_client_id: "{{ lookup('env', 'AUTH_CLIENT_ID') }}"
@@ -45,6 +44,9 @@
         ansible_user: lab-user
         cloud_provider: none
         output_dir: "/tmp"
+
+    - set_fact:
+        ocp4_workload_stackrox_central_admin_password: "{{ f_stackrox_admin_password }}"
 
     - name: Installing on k8s
       set_fact:
