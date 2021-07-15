@@ -13,7 +13,7 @@
       kind: Secret
       metadata:
         name: central-passwd
-        namespace: openshift-operators
+        namespace: stackrox
       type: Opaque
       data:
         password: "{{ f_stackrox_admin_password}}"
