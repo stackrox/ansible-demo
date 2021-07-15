@@ -4,7 +4,7 @@
     url: "{{ central_url }}/v1/authProviders"
     method: GET
     user: admin
-    password: "{{ admin_password }}"
+    password: "{{ f_stackrox_admin_password }}"
     body_format: json
     force_basic_auth: true
     validate_certs: no
@@ -21,7 +21,7 @@
     body: "{{ lookup('template', 'templates/auth0/auth_config.json.j2' ) }}"
     method: POST
     user: admin
-    password: "{{ admin_password }}"
+    password: "{{ f_stackrox_admin_password }}"
     body_format: json
     force_basic_auth: true
     validate_certs: no
@@ -34,7 +34,7 @@
     body: "{{ lookup('template', 'templates/auth0/group.json.j2' ) }}"
     method: POST
     user: admin
-    password: "{{ admin_password }}"
+    password: "{{ f_stackrox_admin_password }}"
     body_format: json
     force_basic_auth: true
     validate_certs: no

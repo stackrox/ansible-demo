@@ -3,7 +3,7 @@
   htpasswd:
     path: files/passwdfile
     name: admin
-    password: "{{ admin_password }}"
+    password: "{{ f_stackrox_admin_password }}"
     crypt_scheme: "bcrypt"
 
 - name: Add helm repo
@@ -56,7 +56,7 @@
     url: "{{ central_url }}/v1/ping"
     method: GET
     user: admin
-    password: "{{ admin_password }}"
+    password: "{{ f_stackrox_admin_password }}"
     force_basic_auth: true
     validate_certs: no  
   register: result

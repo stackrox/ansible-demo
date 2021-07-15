@@ -18,7 +18,7 @@
         central_port: "{{ lookup('env', 'CENTRAL_PORT') | default('443', True) }}"
         original_central_addr: "{{ lookup('env', 'CENTRAL_ADDR') }}"
         central_addr: "{{ lookup('env', 'CENTRAL_ADDR') }}"
-        admin_password: "{{ lookup('env', 'ADMIN_PASSWORD') }}"
+        f_stackrox_admin_password: "{{ lookup('env', 'ADMIN_PASSWORD') }}"
         orchestrator: "{{ lookup('env', 'ORCHESTRATOR') }}"
         kubeconfig: "files/kubeconfig"
         auth_client_id: "{{ lookup('env', 'AUTH_CLIENT_ID') }}"

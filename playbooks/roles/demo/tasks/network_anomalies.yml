@@ -3,7 +3,7 @@
     url: "{{ central_url }}/v1/deployments?query=Deployment:\"{{ item }}\""
     method: GET
     user: admin
-    password: "{{ admin_password }}"
+    password: "{{ f_stackrox_admin_password }}"
     force_basic_auth: true
     validate_certs: no  
   register: deployments
@@ -20,7 +20,7 @@
     url: "{{ central_url }}/v1/deployments/{{ item }}"
     method: GET
     user: admin
-    password: "{{ admin_password }}"
+    password: "{{ f_stackrox_admin_password }}"
     force_basic_auth: true
     validate_certs: no  
   register: deployment_details
@@ -31,7 +31,7 @@
     url: "{{ central_url }}/v1/deployments?query=Deployment:\"jump-host\""
     method: GET
     user: admin
-    password: "{{ admin_password }}"
+    password: "{{ f_stackrox_admin_password }}"
     force_basic_auth: true
     validate_certs: no  
   register: jumphost
@@ -44,7 +44,7 @@
     body: "{{ lookup('template', 'templates/network_anomalies/peers.json.j2' ) }}"
     method: PATCH
     user: admin
-    password: "{{ admin_password }}"
+    password: "{{ f_stackrox_admin_password }}"
     body_format: json
     force_basic_auth: true
     validate_certs: no

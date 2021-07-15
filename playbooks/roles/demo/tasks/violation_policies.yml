@@ -5,7 +5,7 @@
     body: "{{ lookup('file', item ) }}"
     method: POST
     user: admin
-    password: "{{ admin_password }}"
+    password: "{{ f_stackrox_admin_password }}"
     body_format: json
     force_basic_auth: true
     validate_certs: no        

@@ -4,7 +4,7 @@
     url: "{{ central_url }}/v1/deployments?query=Deployment:\"{{ item }}\""
     method: GET
     user: admin
-    password: "{{ admin_password }}"
+    password: "{{ f_stackrox_admin_password }}"
     force_basic_auth: true
     validate_certs: no  
   register: deployments
@@ -22,7 +22,7 @@
     url: "{{ central_url }}/v1/deployments/{{ item }}"
     method: GET
     user: admin
-    password: "{{ admin_password }}"
+    password: "{{ f_stackrox_admin_password }}"
     force_basic_auth: true
     validate_certs: no  
   register: deployment_details
@@ -34,7 +34,7 @@
     body: "{{ lookup('template', 'templates/baseline/baseline.json.j2' ) }}"
     method: PUT
     user: admin
-    password: "{{ admin_password }}"
+    password: "{{ f_stackrox_admin_password }}"
     body_format: json
     force_basic_auth: true
     validate_certs: no
@@ -48,7 +48,7 @@
     body: "{{ lookup('template', 'templates/baseline/lock.json.j2' ) }}"
     method: PUT
     user: admin
-    password: "{{ admin_password }}"
+    password: "{{ f_stackrox_admin_password }}"
     body_format: json
     force_basic_auth: true
     validate_certs: no
