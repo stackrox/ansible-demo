@@ -74,9 +74,3 @@
     - r_stackrox_collector_daemonset.resources[0].status.numberReady | int == r_stackrox_collector_daemonset.resources[0].status.desiredNumberScheduled | int
   delay: 60
   retries: 15
-
-- name: CENTRAL ADMIN URL and PASSWORD 
-  debug:
-    msg: 
-      - "CENTRAL URL: https://{{ f_stackrox_central_addr }}"
-      - "ADMIN PASSWORD: {{ f_stackrox_admin_password}}"

@@ -1,30 +1,30 @@
 # vim: set ft=ansible
 ---
 # Implement your Pre Workload deployment tasks here
-- name: Get central route
-  kubernetes.core.k8s_info:
-    kind: Route
-    api_version: route.openshift.io/v1
-    namespace: stackrox
-    name: central
-  register: r_stackrox_central_route
-  retries: 5
-  delay: 20
+# - name: Get central route
+#   kubernetes.core.k8s_info:
+#     kind: Route
+#     api_version: route.openshift.io/v1
+#     namespace: stackrox
+#     name: central
+#   register: r_stackrox_central_route
+#   retries: 5
+#   delay: 20
 
-- name: Store central route as a fact
-  set_fact:
-    f_stackrox_central_addr: "{{ r_stackrox_central_route.resources[0].spec.host }}"
+# - name: Store central route as a fact
+#   set_fact:
+#     f_stackrox_central_addr: "{{ r_stackrox_central_route.resources[0].spec.host }}"
 
-- name: Get Admin Password
-  kubernetes.core.k8s_info:
-    kind: Secret
-    api_version: v1
-    namespace: stackrox
-    name: central-htpasswd
-  register: r_stackrox_admin_password
-  retries: 60
-  delay: 20
+# - name: Get Admin Password
+#   kubernetes.core.k8s_info:
+#     kind: Secret
+#     api_version: v1
+#     namespace: stackrox
+#     name: central-htpasswd
+#   register: r_stackrox_admin_password
+#   retries: 60
+#   delay: 20
 
-- name: Store central admin password as a fact
-  set_fact:
-    f_stackrox_admin_password: "{{ r_stackrox_admin_password.resources[0].data.password | b64decode }}"
+# - name: Store central admin password as a fact
+#   set_fact:
+#     f_stackrox_admin_password: "{{ r_stackrox_admin_password.resources[0].data.password | b64decode }}"
