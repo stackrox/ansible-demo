@@ -5,6 +5,8 @@ metadata:
   name: central
 spec:
   central:
+    adminPasswordSecret:
+      name: central-passwd
     exposure:
       loadBalancer:
         enabled: false

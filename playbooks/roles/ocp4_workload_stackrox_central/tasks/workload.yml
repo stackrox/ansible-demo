@@ -6,6 +6,17 @@
     name: "stackrox"
     state: present
 
+- name: Create password secret
+  kubernetes.core.k8s:
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: central-passwd
+    type: Opaque
+    data:
+      password: "{{ f_stackrox_admin_password }}"
+    
+
 - name: Install Operators
   kubernetes.core.k8s:
     state: present
@@ -71,15 +82,15 @@
   set_fact:
     f_stackrox_central_addr: "{{ r_stackrox_central_route.resources[0].spec.host }}"
 
-- name: Get Admin Password
-  kubernetes.core.k8s_info:
-    kind: Secret
-    api_version: v1
-    namespace: stackrox
-    name: central-htpasswd
-  register: r_stackrox_admin_password
-  retries: 60
-  delay: 20
+# - name: Get Admin Password
+#   kubernetes.core.k8s_info:
+#     kind: Secret
+#     api_version: v1
+#     namespace: stackrox
+#     name: central-htpasswd
+#   register: r_stackrox_admin_password
+#   retries: 60
+#   delay: 20
 
 - name: Store central admin password as a fact
   set_fact:
