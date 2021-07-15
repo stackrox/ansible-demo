@@ -16,7 +16,7 @@
         namespace: stackrox
       type: Opaque
       data:
-        password: "{{ f_stackrox_admin_password}}"
+        password: "{{ f_stackrox_admin_password | b64encode }}"
     state: present
     
 
@@ -117,4 +117,4 @@
   debug:
     msg: 
       - "CENTRAL URL: https://{{ f_stackrox_central_addr }}"
-      - "ADMIN PASSWORD: {{ f_stackrox_admin_password}}"
+      - "ADMIN PASSWORD: {{ f_stackrox_admin_password }}"
