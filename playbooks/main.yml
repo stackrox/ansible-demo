@@ -80,8 +80,6 @@
     - import_role:
         name: ocp4_workload_pipelines
         # install Pipelines
-      when:
-        platformplus == True
     - import_role:
         name: ocp4_workload_stackrox_central
       when:
