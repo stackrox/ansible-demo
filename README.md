@@ -71,7 +71,7 @@ oc login -u kubeadmin https://api.crc.testing:6443
 Running the playbook.
 ---
 ```
-ansible-playbook rhacs-install.yaml
+ansible-playbook playbooks/rhacs-install.yaml
 ```
 
 It might take a bit of time, so grab a coffee and enjoy :)
