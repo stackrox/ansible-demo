@@ -4,5 +4,5 @@
   roles:
   - rhacs_central
   - rhacs_sensor
-  - rhacs_demo_apps
-  - rhacs_demo_pipeline
+  #- rhacs_demo_apps
+  #- rhacs_demo_pipeline
