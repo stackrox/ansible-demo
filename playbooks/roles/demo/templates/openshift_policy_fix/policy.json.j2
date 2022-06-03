@@ -7,7 +7,6 @@
     "disabled": {{ item.json.disabled | lower }},
     "categories": {{ item.json.categories | tojson }},
     "lifecycleStages": {{ item.json.lifecycleStages | tojson }},
-    "whitelists": {{ item.json.whitelists | tojson  }},
     "exclusions": [
         {% for exclusion in item.json.exclusions %}{{ exclusion | tojson }},{% endfor %}
         {% for namespace in item.item.namespaces %}
