@@ -1,0 +1,16 @@
+FROM gcr.io/ultra-current-825/srox/netflow:latest as netflow
+
+FROM debian:8.8
+
+RUN apt-get -y update || true
+RUN apt-get -y install wget && \
+    wget https://raw.githubusercontent.com/opsxcq/exploit-CVE-2014-6271/master/packages/bash_4.2%252Bdfsg-0.1_amd64.deb -O bash.deb && \
+    dpkg -i bash.deb && \
+    apt-get -y install bash=4.2+dfsg-0.1 && \
+    rm -f bash.deb
+
+COPY --from=netflow /bin/entrypoint /bin/entrypoint
+
+RUN chmod +x /bin/entrypoint
+
+RUN touch /jump-host

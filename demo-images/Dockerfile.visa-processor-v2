@@ -1,0 +1,14 @@
+FROM us.gcr.io/ultra-current-825/struts-violations/visa-processor:latest
+
+RUN apt-get -y update \
+ && apt-get -y install \
+        sudo=1.8.10p3-1+deb8u7
+
+RUN useradd -G sudo tomcat \
+ && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+RUN chown -R tomcat /usr/local/tomcat
+
+USER tomcat
+
+CMD ["/usr/local/tomcat/bin/catalina.sh", "run"]

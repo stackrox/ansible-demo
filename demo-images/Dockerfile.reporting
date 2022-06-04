@@ -1,0 +1,9 @@
+FROM gcr.io/ultra-current-825/srox/netflow:latest as netflow
+
+FROM debian:8.8
+
+COPY --from=netflow /bin/entrypoint /bin/entrypoint
+
+RUN chmod +x /bin/entrypoint
+
+RUN touch /reporting

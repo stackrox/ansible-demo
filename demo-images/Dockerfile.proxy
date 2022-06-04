@@ -1,0 +1,12 @@
+FROM alpine:3.9
+
+RUN apk add iptables && \
+    echo $'#!/bin/sh\n\
+while (true); do\n\
+  iptables\n\
+  sleep 60\n\
+done\n ' \
+    > /bin/entrypoint && \
+    chmod +x /bin/entrypoint
+
+ENTRYPOINT ["/bin/entrypoint"]
