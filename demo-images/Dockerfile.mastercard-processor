@@ -10,6 +10,8 @@ RUN apt-get -y install wget tomcat7 && \
 RUN apt-get -y install libssh-4
 
 RUN mkdir /usr/share/tomcat7/temp
+RUN mkdir -p /usr/local/tomcat/conf/
+RUN chmod -R a+r /usr/local/tomcat/conf/
 
 ENV PATH /usr/share/tomcat7/bin:"$PATH"
 
