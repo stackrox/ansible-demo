@@ -38,6 +38,18 @@
 
 - debug: var=jumphost
 
+- name: Establish baselines
+  uri:
+    url: "{{ central_url }}/v1/networkbaseline/{{ jumphost.json.deployments[0].id }}"
+    method: GET
+    user: admin
+    password: "{{ admin_password }}"
+    force_basic_auth: true
+    validate_certs: no
+  loop: "{{ deployment_details.results }}" 
+  loop_control:
+    label: "{{ item.json.name }}"
+
 - name: Update baselines
   uri:
     url: "{{ central_url }}/v1/networkbaseline/{{ jumphost.json.deployments[0].id }}/peers"
