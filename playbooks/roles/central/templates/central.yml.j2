@@ -14,11 +14,12 @@ central:
     route:
       enabled: true
 {% endif %}
+  image:
+    tag: 3.71.3-rc.1
 
 {% if imageregistry != '' %}
 image:
   registry: "{{ imageregistry }}"
-  tag: 3.71.3-rc.1
 {% endif %}
 
 
