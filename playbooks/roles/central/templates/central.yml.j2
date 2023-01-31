@@ -14,19 +14,16 @@ central:
     route:
       enabled: true
 {% endif %}
+{% if centraltag != '' %}
+  image:
+    tag: "{{ centraltag }}"
+{% endif %}
 
 {% if imageregistry != '' %}
 image:
   registry: "{{ imageregistry }}"
 {% endif %}
 
-
-
-
-
-
 imagePullSecrets:
     username: "{{ imagepulluser }}"
     password: "{{ imagepullpassword }}"
-
-

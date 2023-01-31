@@ -18,6 +18,10 @@
   community.kubernetes.helm:
     name: stackrox-central-services
     chart_ref: stackrox/central-services
+{% if centralhelmchartversion != '' %}
+  chart_version: "{{ centralhelmchartversion }}"
+{% endif %}
+    chart_version: 
     release_namespace: stackrox
     values: "{{ lookup('template', 'templates/central.yml.j2') | from_yaml }}"
     kubeconfig: "{{ kubeconfig }}"
