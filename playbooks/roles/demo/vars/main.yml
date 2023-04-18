@@ -46,6 +46,7 @@ openshift_policy_fixes:
       - openshift-sdn
       - openshift-service-ca
       - openshift-service-ca-operator
+      - openshift-ovn-kubernetes
   - name: "Ensure That a User for the Container Has Been Created"
     namespaces:
       - openshift-apiserver
@@ -85,24 +86,39 @@ openshift_policy_fixes:
       - openshift-sdn
       - openshift-service-ca
       - openshift-service-ca-operator
+      - openshift-ovn-kubernetes
+  - name: "Iptables Executed in Privileged Container"
+    namespaces:
+      - openshift-cluster-node-tuning-operator
+      - openshift-sdn
+      - openshift-ovn-kubernetes
+  - name: "iptables Execution"
+    namespaces:
+      - openshift-cluster-node-tuning-operator
+      - openshift-sdn
+      - openshift-ovn-kubernetes
   - name: "Ensure that the host's IPC namespace is not shared"
     namespaces:
       - openshift-cluster-node-tuning-operator
+      - openshift-ovn-kubernetes
   - name: "Docker CIS 5.16: Ensure that the host's IPC namespace is not shared"
     namespaces:
       - openshift-cluster-node-tuning-operator
+      - openshift-ovn-kubernetes
   - name: "Ensure that the host's process namespace is not shared"
     namespaces:
       - openshift-cluster-node-tuning-operator
       - openshift-machine-config-operator
       - openshift-monitoring
       - openshift-sdn
+      - openshift-ovn-kubernetes
   - name: "Docker CIS 5.15: Ensure that the host's process namespace is not shared"
     namespaces:
       - openshift-cluster-node-tuning-operator
       - openshift-machine-config-operator
       - openshift-monitoring
       - openshift-sdn
+      - openshift-ovn-kubernetes
   - name: "Environment Variable Contains Secret"
     namespaces:
       - openshift-image-registry
@@ -119,6 +135,7 @@ openshift_policy_fixes:
       - openshift-multus
       - openshift-oauth-apiserver
       - openshift-sdn
+      - openshift-ovn-kubernetes
   - name: "Fixable CVSS >= 7"
     namespaces:
       - openshift-apiserver
@@ -164,6 +181,7 @@ openshift_policy_fixes:
       - openshift-sdn
       - openshift-service-ca
       - openshift-service-ca-operator
+      - openshift-ovn-kubernetes
   - name: "Mounting Sensitive Host Directories"
     namespaces:
       - openshift-apiserver
@@ -181,6 +199,7 @@ openshift_policy_fixes:
       - openshift-network-operator
       - openshift-oauth-apiserver
       - openshift-sdn
+      - openshift-ovn-kubernetes
   - name: "No resource requests or limits specified"
     namespaces:
       - openshift-apiserver
@@ -225,6 +244,7 @@ openshift_policy_fixes:
       - openshift-operator-lifecycle-manager
       - openshift-service-ca
       - openshift-service-ca-operator
+      - openshift-ovn-kubernetes
   - name: "Privileged Container"
     namespaces:
       - openshift-apiserver
@@ -237,6 +257,7 @@ openshift_policy_fixes:
       - openshift-machine-config-operator
       - openshift-multus
       - openshift-oauth-apiserver
+      - openshift-ovn-kubernetes
   - name: "Process with UID 0"
     namespaces:
       - openshift-dns
@@ -244,6 +265,7 @@ openshift_policy_fixes:
       - openshift-image-registry
       - openshift-multus
       - openshift-sdn
+      - openshift-ovn-kubernetes
   - name: "Red Hat Package Manager in Image"
     namespaces:
       - openshift-apiserver
@@ -289,6 +311,7 @@ openshift_policy_fixes:
       - openshift-sdn
       - openshift-service-ca
       - openshift-service-ca-operator
+      - openshift-ovn-kubernetes
   - name: "Wget in Image"
     namespaces:
       - openshift-apiserver
@@ -333,3 +356,4 @@ openshift_policy_fixes:
       - openshift-sdn
       - openshift-service-ca
       - openshift-service-ca-operator
+      - openshift-ovn-kubernetes
