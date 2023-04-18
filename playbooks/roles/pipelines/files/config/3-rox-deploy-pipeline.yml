@@ -61,3 +61,19 @@ spec:
       value: roxsecrets
     - name: rox_central_endpoint
       value: roxsecrets
+  - name: generate-netpol
+    runAfter:
+      - write-yaml
+    taskRef:
+      name: rox-generate-netpol
+      kind: ClusterTask
+    workspaces:
+      - name: deployfiles
+        workspace: files
+    params:
+    - name: file
+      value: "deploy.yml"
+    - name: rox_api_token
+      value: roxsecrets
+    - name: rox_central_endpoint
+      value: roxsecrets
