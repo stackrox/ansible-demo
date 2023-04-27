@@ -20,7 +20,6 @@ spec:
       script: |
         #!/usr/bin/env bash
         echo "$(params.yaml)" | base64 -d > /deployfile/deploy.yml
-
 ---
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
@@ -61,11 +60,35 @@ spec:
       value: roxsecrets
     - name: rox_central_endpoint
       value: roxsecrets
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: rox-netpol-pipeline
+  namespace: pipeline-demo
+spec:
+  description: Rox demo netpol generate
+  params:
+    - name: yaml
+      type: string
+      description: Contents of the deployment YAML to assess
+  workspaces:
+    - name: files  
+  tasks:
+  - name: write-yaml
+    taskRef:
+      name: write-yaml-file
+    workspaces:
+      - name: deployfiles
+        workspace: files
+    params:
+    - name: yaml
+      value: $(params.yaml)
   - name: generate-netpol
     runAfter:
       - write-yaml
     taskRef:
-      name: rox-generate-netpol
+      name: rox-netpol-pipeline
       kind: ClusterTask
     workspaces:
       - name: deployfiles

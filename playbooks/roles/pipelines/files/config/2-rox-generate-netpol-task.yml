@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: ClusterTask
 metadata:
-  name: rox-generate-netpol
+  name: rox-netpol-pipeline
   namespace: pipeline-demo
 spec:
   params:
@@ -39,7 +39,7 @@ spec:
       script: |
         #!/usr/bin/env bash
         set +x
-        cat /deployfile/deploy.yml
+        #cat /deployfile/$(params.file)
         curl -k -L -H "Authorization: Bearer $ROX_API_TOKEN" https://$ROX_CENTRAL_ENDPOINT/api/cli/download/roxctl-linux --output ./roxctl  > /dev/null; echo "Getting roxctl"
         chmod +x ./roxctl  > /dev/null
         ./roxctl generate netpol /deployfile/$(params.file) 

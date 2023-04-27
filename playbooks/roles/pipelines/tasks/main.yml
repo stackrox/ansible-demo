@@ -105,4 +105,11 @@
     definition: "{{ lookup('template', 'templates/run/4-rox-deploy-pipelinerun.yml.j2' ) | from_yaml_all }}"
     kubeconfig: "{{ kubeconfig }}"
   loop: "{{ deployment_yamls }}"
+
+- name: Run pipeline to generate netpol
+  community.kubernetes.k8s:
+    state: present
+    definition: "{{ lookup('template', 'templates/run/4-rox-netpol-pipelinerun.yml.j2' ) | from_yaml_all }}"
+    kubeconfig: "{{ kubeconfig }}"
+  loop: "{{ net_yamls }}"
   # defined in roles/pipelines/vars/main.yml

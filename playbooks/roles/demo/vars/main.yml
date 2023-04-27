@@ -47,7 +47,7 @@ openshift_policy_fixes:
       - openshift-service-ca
       - openshift-service-ca-operator
       - openshift-ovn-kubernetes
-  - name: "Ensure That a User for the Container Has Been Created"
+  - name: "Docker CIS 4.1: Ensure That a User for the Container Has Been Created"
     namespaces:
       - openshift-apiserver
       - openshift-apiserver-operator
@@ -97,20 +97,17 @@ openshift_policy_fixes:
       - openshift-cluster-node-tuning-operator
       - openshift-sdn
       - openshift-ovn-kubernetes
-  - name: "Ensure that the host's IPC namespace is not shared"
-    namespaces:
-      - openshift-cluster-node-tuning-operator
-      - openshift-ovn-kubernetes
   - name: "Docker CIS 5.16: Ensure that the host's IPC namespace is not shared"
     namespaces:
       - openshift-cluster-node-tuning-operator
       - openshift-ovn-kubernetes
-  - name: "Ensure that the host's process namespace is not shared"
+  - name: "Docker CIS 5.9 and 5.20: Ensure that the host's network namespace is not shared"
     namespaces:
       - openshift-cluster-node-tuning-operator
-      - openshift-machine-config-operator
-      - openshift-monitoring
-      - openshift-sdn
+      - openshift-ovn-kubernetes
+  - name: "Docker CIS 4.1: Ensure That a User for the Container Has Been Created"
+    namespaces:
+      - openshift-cluster-node-tuning-operator
       - openshift-ovn-kubernetes
   - name: "Docker CIS 5.15: Ensure that the host's process namespace is not shared"
     namespaces:
@@ -122,7 +119,7 @@ openshift_policy_fixes:
   - name: "Environment Variable Contains Secret"
     namespaces:
       - openshift-image-registry
-  - name: "Fixable CVSS >= 6 and Privileged"
+  - name: "Privileged Containers with Important and Critical Fixable CVEs"
     namespaces:
       - openshift-apiserver
       - openshift-cluster-csi-drivers
@@ -136,7 +133,7 @@ openshift_policy_fixes:
       - openshift-oauth-apiserver
       - openshift-sdn
       - openshift-ovn-kubernetes
-  - name: "Fixable CVSS >= 7"
+  - name: "Fixable Severity at least Important"
     namespaces:
       - openshift-apiserver
       - openshift-apiserver-operator
