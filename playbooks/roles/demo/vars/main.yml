@@ -104,6 +104,7 @@ openshift_policy_fixes:
   - name: "Docker CIS 5.9 and 5.20: Ensure that the host's network namespace is not shared"
     namespaces:
       - openshift-cluster-node-tuning-operator
+      - openshift-cluster-csi-drivers
       - openshift-ovn-kubernetes
   - name: "Docker CIS 4.1: Ensure That a User for the Container Has Been Created"
     namespaces:
