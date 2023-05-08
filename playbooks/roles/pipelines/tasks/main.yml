@@ -32,10 +32,9 @@
     url: "{{ central_url }}/v1/apitokens/generate"
     body: '{"name":"pipelines-ci-token","role":null,"roles":["Continuous Integration"]}'
     method: POST
-    user: admin
-    password: "{{ admin_password }}"
+    headers:
+      Authorization: "Bearer {{ rox_api_token }}"
     body_format: json
-    force_basic_auth: true
     validate_certs: no
   register: ci_token_json
 

@@ -1,7 +1,5 @@
 ---
-- include_tasks: image_pull_secret.yml
 - include_tasks: violation_policies.yml
-# - include_tasks: slack.yml
 - include_tasks: deploy_demos.yml
 - name: Network anomalies
   include_tasks: network_anomalies.yml
@@ -11,6 +9,3 @@
   include_tasks: openshift_policy_fix.yml
   when: 
     orchestrator == "openshift"
-- include_tasks: setup_auth0.yml
-  when: auth_client_id != ""
-    

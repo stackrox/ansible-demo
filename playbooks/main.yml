@@ -10,6 +10,7 @@
         original_central_addr: "{{ lookup('env', 'CENTRAL_ADDR') }}"
         central_addr: "{{ lookup('env', 'CENTRAL_ADDR') }}"
         admin_password: "{{ lookup('env', 'ADMIN_PASSWORD') }}"
+        rox_api_token: "{{ lookup('env', 'ROX_API_TOKEN') }}"
         orchestrator: "{{ lookup('env', 'ORCHESTRATOR') }}"
         kubeconfig: "files/kubeconfig"
         auth_client_id: "{{ lookup('env', 'AUTH_CLIENT_ID') }}"

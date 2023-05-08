@@ -3,9 +3,8 @@
   uri:
     url: "{{ central_url }}/v1/policies"
     method: GET
-    user: admin
-    password: "{{ admin_password }}"
-    force_basic_auth: true
+    headers:
+     Authorization: "Bearer {{ rox_api_token }}"
     validate_certs: no  
   register: policies
 
@@ -13,9 +12,8 @@
   uri:
     url: "{{ central_url }}/v1/policies/{{ policies.json.policies | json_query(jmesquery) | first }}"
     method: GET
-    user: admin
-    password: "{{ admin_password }}"
-    force_basic_auth: true
+    headers:
+     Authorization: "Bearer {{ rox_api_token }}"
     validate_certs: no  
   vars:
     jmesquery: "[? name==`{{ item.name }}`].id"
@@ -28,10 +26,9 @@
     url: "{{ central_url }}/v1/policies/{{ item.json.id }}"
     body: "{{ lookup('template', 'templates/openshift_policy_fix/policy.json.j2') }}"
     method: PUT
-    user: admin
-    password: "{{ admin_password }}"
+    headers:
+     Authorization: "Bearer {{ rox_api_token }}"
     body_format: json
-    force_basic_auth: true
     validate_certs: no
     # temporarily accept 400s due to ROX-6699
     status_code: 200, 400

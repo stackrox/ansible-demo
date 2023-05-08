@@ -2,9 +2,8 @@
   uri:
     url: "{{ central_url }}/v1/deployments?query=Deployment:\"{{ item }}\""
     method: GET
-    user: admin
-    password: "{{ admin_password }}"
-    force_basic_auth: true
+    headers:
+     Authorization: "Bearer {{ rox_api_token }}"
     validate_certs: no  
   register: deployments
   loop:
@@ -19,9 +18,8 @@
   uri:
     url: "{{ central_url }}/v1/deployments/{{ item }}"
     method: GET
-    user: admin
-    password: "{{ admin_password }}"
-    force_basic_auth: true
+    headers:
+     Authorization: "Bearer {{ rox_api_token }}"
     validate_certs: no  
   register: deployment_details
   loop: "{{ deployment_ids }}"
@@ -30,9 +28,8 @@
   uri:
     url: "{{ central_url }}/v1/deployments?query=Deployment:\"jump-host\""
     method: GET
-    user: admin
-    password: "{{ admin_password }}"
-    force_basic_auth: true
+    headers:
+     Authorization: "Bearer {{ rox_api_token }}"
     validate_certs: no  
   register: jumphost
 
@@ -42,9 +39,8 @@
   uri:
     url: "{{ central_url }}/v1/networkbaseline/{{ jumphost.json.deployments[0].id }}"
     method: GET
-    user: admin
-    password: "{{ admin_password }}"
-    force_basic_auth: true
+    headers:
+     Authorization: "Bearer {{ rox_api_token }}"
     validate_certs: no
   loop: "{{ deployment_details.results }}" 
   loop_control:
@@ -55,10 +51,9 @@
     url: "{{ central_url }}/v1/networkbaseline/{{ jumphost.json.deployments[0].id }}/peers"
     body: "{{ lookup('template', 'templates/network_anomalies/peers.json.j2' ) }}"
     method: PATCH
-    user: admin
-    password: "{{ admin_password }}"
+    headers:
+     Authorization: "Bearer {{ rox_api_token }}"
     body_format: json
-    force_basic_auth: true
     validate_certs: no
   loop: "{{ deployment_details.results }}" 
   loop_control:
