@@ -1,7 +1,0 @@
-scanner_image: stackrox.io/scanner:2.10.0
-scanner_db_image: stackrox.io/scanner-db:2.10.0
-stackrox_image: stackrox.io/main:3.0.55.0
-
-cert_arg: "--default-tls-cert files/certs/cert.pem --default-tls-key files/certs/cert.pem"
-
-orchestrator: k8s

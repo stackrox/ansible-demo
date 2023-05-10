@@ -1,3 +1,0 @@
----
-- name: Install Central
-  include_tasks: central.yml

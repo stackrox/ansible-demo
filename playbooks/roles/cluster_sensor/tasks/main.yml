@@ -1,3 +1,0 @@
----
-- name: Install cluster bundle
-  include_tasks: cluster_bundle.yml

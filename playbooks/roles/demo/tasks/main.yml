@@ -5,7 +5,7 @@
   include_tasks: network_anomalies.yml
 - name: Baseline processes
   include_tasks: baseline_processes.yml
-- name: Add OpenShift policy exceptions
-  include_tasks: openshift_policy_fix.yml
-  when: 
-    orchestrator == "openshift"
+    #- name: Add OpenShift policy exceptions
+    #  include_tasks: openshift_policy_fix.yml
+    #  when: 
+    #    orchestrator == "openshift"

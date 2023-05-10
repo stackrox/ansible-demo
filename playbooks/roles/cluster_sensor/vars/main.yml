@@ -1,1 +1,0 @@
-central_url: "https://{{ central_addr }}:{{ central_port }}"

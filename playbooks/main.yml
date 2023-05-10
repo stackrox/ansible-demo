@@ -7,18 +7,10 @@
         content: "{{ lookup('env', 'KUBECONFIG_BASE64') | b64decode }}"
     - set_fact:
         central_port: "{{ lookup('env', 'CENTRAL_PORT') | default('443', True) }}"
-        original_central_addr: "{{ lookup('env', 'CENTRAL_ADDR') }}"
         central_addr: "{{ lookup('env', 'CENTRAL_ADDR') }}"
-        admin_password: "{{ lookup('env', 'ADMIN_PASSWORD') }}"
         rox_api_token: "{{ lookup('env', 'ROX_API_TOKEN') }}"
-        orchestrator: "{{ lookup('env', 'ORCHESTRATOR') }}"
+        orchestrator: "{{ lookup('env', 'ORCHESTRATOR') | default('openshift', True) }}"
         kubeconfig: "files/kubeconfig"
-        auth_client_id: "{{ lookup('env', 'AUTH_CLIENT_ID') }}"
-        auth_domain: "{{ lookup('env', 'AUTH_DOMAIN') }}"
-        imagepulluser: "{{ lookup('env', 'IMAGE_PULL_USER') }}"
-        imagepullpassword: "{{ lookup('env', 'IMAGE_PULL_PASSWORD') }}"
-        imageregistry: "{{ lookup('env', 'IMAGE_REGISTRY') | default('', True) }}"
-
     - name: Installing on k8s
       set_fact:
         orchestrator_tool: kubectl
@@ -31,14 +23,6 @@
         orchestrator == "openshift"
 
   tasks:
-    - import_role:
-        name: central
-      when:
-        original_central_addr == ""
-    - import_role:
-        name: cluster_sensor
-      when:
-        original_central_addr == ""
     - import_role:
         name: demo
     - import_role:
