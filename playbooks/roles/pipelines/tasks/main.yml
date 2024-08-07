@@ -94,9 +94,9 @@
     kubeconfig: "{{ kubeconfig }}"
   loop:
     - name: "sample-image-old"
-      image: "quay.io/rhacs-demo/sample-image:getting-started-old"
+      image: "quay.io/rhacs-misc/log4shell:1.1"
     - name: "sample-image-new"
-      image: "quay.io/rhacs-demo/sample-image:getting-started"
+      image: "quay.io/rhacs-misc/log4jclean:1.0"
 
 - name: Run pipeline against deployment yamls
   community.kubernetes.k8s:

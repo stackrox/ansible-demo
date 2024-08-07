@@ -1,5 +1,5 @@
 ---
-- include_tasks: violation_policies.yml
+#- include_tasks: violation_policies.yml
 - include_tasks: deploy_demos.yml
 - name: Network anomalies
   include_tasks: network_anomalies.yml

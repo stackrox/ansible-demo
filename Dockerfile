@@ -1,6 +1,7 @@
-FROM frolvlad/alpine-glibc:alpine-3.11_glibc-2.31
+#FROM frolvlad/alpine-glibc:alpine-3.11_glibc-2.31
+FROM frolvlad/alpine-glibc
 
-ARG OC_VERSION=4.6
+ARG OC_VERSION=4.15
  
 ENV ANSIBLE_VERSION 3.0.0
  
@@ -12,7 +13,7 @@ ENV BUILD_PACKAGES \
   sshpass \
   git \
   python3 \
-  py-boto \
+  py3-boto3 \
   py-dateutil \
   py-httplib2 \
   py-paramiko \
@@ -46,10 +47,11 @@ RUN set -x && \
     \
     echo "==> Adding Python runtime..."  && \
     apk add --no-cache ${BUILD_PACKAGES} && \
-    pip3 install python-keyczar docker-py && \
+    pip3 install six python-keyczar docker-py --break-system-packages && \
     \
     echo "==> Installing Ansible & dependencies..."  && \
-    pip3 install jmespath kubernetes==11.0.0 openshift==0.11.2 passlib ansible==${ANSIBLE_VERSION} && \
+#    pip3 install jmespath kubernetes==11.0.0 openshift==0.11.2 passlib ansible==${ANSIBLE_VERSION} --break-system-packages && \
+    pip3 install jmespath kubernetes==11.0.0 openshift==0.11.2 passlib ansible --break-system-packages && \
     \
     echo "==> Cleaning up..."  && \
     apk del build-dependencies && \
@@ -61,9 +63,8 @@ RUN set -x && \
     echo "localhost" >> /etc/ansible/hosts
 
 # install kubectl & oc
-
 RUN mkdir /tools && \
-    curl -sLo /tmp/oc.tar.gz https://mirror.openshift.com/pub/openshift-v$(echo $OC_VERSION | cut -d'.' -f 1)/clients/oc/$OC_VERSION/linux/oc.tar.gz &&\
+    curl -sLo /tmp/oc.tar.gz https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-${OC_VERSION}/openshift-client-linux.tar.gz && \
     tar xzvf /tmp/oc.tar.gz -C /bin &&\
     rm -rf /tmp/oc.tar.gz 
 

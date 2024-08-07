@@ -16,7 +16,7 @@ spec:
       description: YAML file in the deployfiles workspace
   results:
       - name: check_output
-        description: Output of `roxctl generate netpol`
+        description: Output of `roxctl netpol generate`
   workspaces:
     - name: deployfiles
       description: |
@@ -42,4 +42,4 @@ spec:
         cat /deployfile/$(params.file)
         curl -k -L -H "Authorization: Bearer $ROX_API_TOKEN" https://$ROX_CENTRAL_ENDPOINT/api/cli/download/roxctl-linux --output ./roxctl  > /dev/null; echo "Getting roxctl"
         chmod +x ./roxctl  > /dev/null
-        ./roxctl generate netpol /deployfile/$(params.file) 
+        ./roxctl netpol generate /deployfile/$(params.file) 

